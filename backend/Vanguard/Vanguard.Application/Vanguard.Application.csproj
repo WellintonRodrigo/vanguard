@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Vanguard.Domain\Vanguard.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>
