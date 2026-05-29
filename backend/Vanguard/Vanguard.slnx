@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Vanguard.API/Vanguard.API.csproj" />
+  <Project Path="Vanguard.Application/Vanguard.Application.csproj" />
+  <Project Path="Vanguard.Domain/Vanguard.Domain.csproj" />
+  <Project Path="Vanguard.Infrastructure/Vanguard.Infrastructure.csproj" />
+</Solution>
