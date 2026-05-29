@@ -6,16 +6,18 @@ namespace Vanguard.Domain.Entities
 {
     internal class Prediction
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public Guid Id { get; set; }
 
-        public string Question { get; set; } = string.Empty;
+        public string TargetProduct { get; set; } = string.Empty;
 
-        public double Probability { get; set; }
-
-        public double Confidence { get; set; }
+        public decimal ImpactProbability { get; set; }
 
         public string Trend { get; set; } = string.Empty;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public decimal EstimatedVariationPercent { get; set; }
+
+        public string Insight { get; set; } = string.Empty;
+
+        public DateTime PredictionDate { get; set; }
     }
 }
