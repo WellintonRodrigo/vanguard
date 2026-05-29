@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Vanguard.Application.DTOs;
+using Vanguard.Application.DTOs.Predictions;
 
 namespace Vanguard.Application.Features.Predictions.Services
 {
