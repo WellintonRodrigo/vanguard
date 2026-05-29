@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Vanguard.Application.DTOs;
+using Vanguard.Application.DTOs.Predictions;
 using Vanguard.Application.Features.Predictions.Services;
 namespace Vanguard.API.Controllers
 {
