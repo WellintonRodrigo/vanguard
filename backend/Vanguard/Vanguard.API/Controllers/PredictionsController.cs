@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Vanguard.Application.DTOs;
-
+using Vanguard.Application.Features.Predictions.Services;
 namespace Vanguard.API.Controllers
 {
     [ApiController]
     [Route("predictions")]
     public class PredictionsController: ControllerBase
     {
+        private readonly PredictionService _predictionService;
+        public PredictionsController(PredictionService predictionService)
+        {
+            _predictionService = predictionService;
+        }
+
         [HttpPost("analize")]
         public IActionResult Analize([FromBody] PredictionRequestDto request)
         {
-            var response = new
-            {
-                probability = 78,
-                confidence = 91,
-                trend = "UP",
-                analyzedAt = DateTime.UtcNow
-            };
-            return Ok(response);
+           var result = _predictionService.Analyze(request.Question);
+            return Ok(result);
         }
 
     }
