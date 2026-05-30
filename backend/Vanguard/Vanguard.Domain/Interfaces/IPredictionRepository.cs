@@ -5,16 +5,12 @@ using Vanguard.Domain.Entities;
 
 namespace Vanguard.Domain.Interfaces
 {
-   public interface IPredictionRepository
+    public interface IPredictionRepository
     {
         Task CreateAsync(Prediction prediction);
-
         Task<Prediction?> GetByIdAsync(Guid id);
-
         Task<List<Prediction>> GetAllAsync();
-
         Task UpdateAsync(Prediction prediction);
-
         Task DeleteAsync(Guid id);
     }
 }

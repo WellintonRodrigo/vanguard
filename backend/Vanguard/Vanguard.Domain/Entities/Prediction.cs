@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Vanguard.Domain.Enums;
 
 namespace Vanguard.Domain.Entities
 {
-    internal class Prediction
+    public class Prediction
     {
         public Guid Id { get; set; }
 
@@ -12,7 +13,7 @@ namespace Vanguard.Domain.Entities
 
         public decimal ImpactProbability { get; set; }
 
-        public string Trend { get; set; } = string.Empty;
+        public Trend Trend { get; set; }
 
         public decimal EstimatedVariationPercent { get; set; }
 
