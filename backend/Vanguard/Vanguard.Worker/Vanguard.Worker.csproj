@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Vanguard.Application\Vanguard.Application.csproj" />
+    <ProjectReference Include="..\Vanguard.Infrastructure\Vanguard.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

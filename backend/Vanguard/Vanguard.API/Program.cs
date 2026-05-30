@@ -1,4 +1,8 @@
 using Vanguard.Application.Features.Predictions.Services;
+using Vanguard.Domain.Interfaces;
+using Vanguard.Infrastructure.Persistence.Configurations;
+using Vanguard.Infrastructure.Persistence.Context;
+using Vanguard.Infrastructure.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<PredictionService>();
+
+builder.Services.Configure<MongoDbSettings>(
+    builder.Configuration.GetSection(MongoDbSettings.SectionName));
+builder.Services.AddSingleton<MongoDbContext>();
+builder.Services.AddScoped<IPredictionRepository, PredictionRepository>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

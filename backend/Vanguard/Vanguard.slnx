@@ -3,4 +3,5 @@
   <Project Path="Vanguard.Application/Vanguard.Application.csproj" />
   <Project Path="Vanguard.Domain/Vanguard.Domain.csproj" />
   <Project Path="Vanguard.Infrastructure/Vanguard.Infrastructure.csproj" />
+  <Project Path="Vanguard.Worker/Vanguard.Worker.csproj" />
 </Solution>

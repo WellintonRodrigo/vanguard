@@ -1,36 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Vanguard.Domain.Entities;
+﻿using Vanguard.Domain.Entities;
 using Vanguard.Domain.Interfaces;
+using MongoDB.Driver;
+
 
 namespace Vanguard.Infrastructure.Persistence.Repositories
 {
     public class PredictionRepository : IPredictionRepository
     {
-        Task IPredictionRepository.CreateAsync(Prediction prediction)
+        private readonly IMongoCollection<Prediction> _collection;
+
+        public PredictionRepository(IMongoDatabase database)
         {
-            throw new NotImplementedException();
+            _collection = database.GetCollection<Prediction>("vanguard_predictions");
         }
 
-        Task IPredictionRepository.DeleteAsync(Guid id)
+        public async Task CreateAsync(Prediction prediction)
         {
-            throw new NotImplementedException();
+            await _collection.InsertOneAsync(prediction);
         }
 
-        Task<List<Prediction>> IPredictionRepository.GetAllAsync()
+        public async Task<Prediction?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _collection
+                .Find(prediction => prediction.Id == id)
+                .FirstOrDefaultAsync();
         }
 
-        Task<Prediction?> IPredictionRepository.GetByIdAsync(Guid id)
+        public async Task<List<Prediction>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _collection
+                .Find(_ => true)
+                .ToListAsync();
         }
 
-        Task IPredictionRepository.UpdateAsync(Prediction prediction)
+        public async Task UpdateAsync(Prediction prediction)
         {
-            throw new NotImplementedException();
+            await _collection.ReplaceOneAsync(
+                item => item.Id == prediction.Id,
+                prediction);
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            await _collection.DeleteOneAsync(
+                prediction => prediction.Id == id);
         }
     }
 }
