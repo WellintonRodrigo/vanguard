@@ -8,9 +8,9 @@ namespace Vanguard.Domain.Interfaces
     public interface IPredictionRepository
     {
         Task CreateAsync(Prediction prediction);
-        Task<Prediction?> GetByIdAsync(Guid id);
-        Task<List<Prediction?>> GetAllAsync();
+        Task<Prediction?> GetByIdAsync(string id);
+        Task<List<Prediction>> GetAllAsync();
         Task UpdateAsync(Prediction prediction);
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(string id);
     }
 }

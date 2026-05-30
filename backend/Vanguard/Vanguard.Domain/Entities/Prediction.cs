@@ -7,7 +7,7 @@ namespace Vanguard.Domain.Entities
 {
     public class Prediction
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string TargetProduct { get; set; } = string.Empty;
 

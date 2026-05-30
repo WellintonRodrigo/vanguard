@@ -19,6 +19,11 @@ namespace Vanguard.API.Controllers
            var result = _predictionService.Analyze(request.Question);
             return Ok(result);
         }
-
+        [HttpPost("teste")]
+        public async Task<IActionResult> teste() // controller de teste para verificar se a persistência está funcionando
+        {
+            await _predictionService.SalvarTesteAsync();
+            return Ok("Teste salvo com sucesso");
+        }
     }
 }

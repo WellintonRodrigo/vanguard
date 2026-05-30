@@ -20,7 +20,7 @@ namespace Vanguard.Infrastructure.Persistence.Repositories
             await _collection.InsertOneAsync(prediction);
         }
 
-        public async Task<Prediction?> GetByIdAsync(Guid id)
+        public async Task<Prediction?> GetByIdAsync(string id)
         {
             return await _collection
                 .Find(prediction => prediction.Id == id)
@@ -41,7 +41,7 @@ namespace Vanguard.Infrastructure.Persistence.Repositories
                 prediction);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(string id)
         {
             await _collection.DeleteOneAsync(
                 prediction => prediction.Id == id);
