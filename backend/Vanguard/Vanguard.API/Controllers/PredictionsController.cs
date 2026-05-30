@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Vanguard.Application.DTOs.Predictions;
 using Vanguard.Application.Features.Predictions.Services;
+using Vanguard.Application.Interfaces;
 namespace Vanguard.API.Controllers
 {
     [ApiController]
@@ -8,9 +9,11 @@ namespace Vanguard.API.Controllers
     public class PredictionsController: ControllerBase
     {
         private readonly PredictionService _predictionService;
-        public PredictionsController(PredictionService predictionService)
+        private readonly IWeatherProvider _weatherProvider;
+        public PredictionsController(PredictionService predictionService, IWeatherProvider weatherProvider)
         {
             _predictionService = predictionService;
+            _weatherProvider = weatherProvider;
         }
 
         [HttpPost("analize")]
@@ -24,6 +27,16 @@ namespace Vanguard.API.Controllers
         {
             await _predictionService.SalvarTesteAsync();
             return Ok("Teste salvo com sucesso");
+        }
+        [HttpGet("weather-test")]
+        public async Task<IActionResult> WeatherTest() // controller de teste para verificar se a integração com o Open-Meteo está funcionando
+        {
+            var result = await _weatherProvider.GetWeatherAsync(
+                latitude: -26.3044,
+                longitude: -48.8487,
+                location: "Joinville - SC"
+                );
+            return Ok(result);
         }
     }
 }
