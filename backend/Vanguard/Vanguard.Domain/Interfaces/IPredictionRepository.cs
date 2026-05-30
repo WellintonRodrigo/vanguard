@@ -9,7 +9,7 @@ namespace Vanguard.Domain.Interfaces
     {
         Task CreateAsync(Prediction prediction);
         Task<Prediction?> GetByIdAsync(Guid id);
-        Task<List<Prediction>> GetAllAsync();
+        Task<List<Prediction?>> GetAllAsync();
         Task UpdateAsync(Prediction prediction);
         Task DeleteAsync(Guid id);
     }

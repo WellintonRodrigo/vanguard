@@ -1,6 +1,7 @@
 ﻿using Vanguard.Domain.Entities;
 using Vanguard.Domain.Interfaces;
 using MongoDB.Driver;
+using Vanguard.Infrastructure.Persistence.Context;
 
 
 namespace Vanguard.Infrastructure.Persistence.Repositories
@@ -9,9 +10,9 @@ namespace Vanguard.Infrastructure.Persistence.Repositories
     {
         private readonly IMongoCollection<Prediction> _collection;
 
-        public PredictionRepository(IMongoDatabase database)
+        public PredictionRepository(MongoDbContext context)
         {
-            _collection = database.GetCollection<Prediction>("vanguard_predictions");
+            _collection = context.Database.GetCollection<Prediction>("vanguard_predictions");
         }
 
         public async Task CreateAsync(Prediction prediction)

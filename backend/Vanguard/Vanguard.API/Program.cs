@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<PredictionService>();
-
+builder.Configuration.GetSection("MongoDb");
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection(MongoDbSettings.SectionName));
 builder.Services.AddSingleton<MongoDbContext>();
