@@ -1,3 +1,4 @@
+using Vanguard.Application.Features.Insights;
 using Vanguard.Application.Features.Predictions.Services;
 using Vanguard.Application.Interfaces;
 using Vanguard.Domain.Interfaces;
@@ -23,6 +24,7 @@ builder.Services.AddHttpClient<IWeatherProvider, OpenMeteoWeatherProvider>(
         client.BaseAddress = new Uri("https://api.open-meteo.com/v1/");
         client.Timeout = TimeSpan.FromSeconds(10);
     });
+builder.Services.AddSingleton<InsightTemplateService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();

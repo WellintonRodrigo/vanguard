@@ -1,0 +1,19 @@
+﻿{
+  "heavyRain": [
+    "Aviso: chuvas intensas em {location} podem impactar a oferta de {product}.",
+    "Padrões de precipitação elevada indicam possível pressão de alta no preço de {product}.",
+    "Volume expressivo de chuva pode afetar colheita, transporte e disponibilidade de {product}."
+  ],
+  "moderateRain": [
+    "Atenção: chuva moderada em {location} pode gerar impacto leve sobre {product}.",
+    "Condições climáticas indicam possível oscilação limitada no preço de {product}."
+  ],
+  "lowRain": [
+    "Baixa precipitação em {location} indica risco climático reduzido para {product}.",
+    "Sem sinais relevantes de chuva extrema, o impacto sobre {product} tende a ser baixo."
+  ],
+  "stable": [
+    "Cenário climático estável para {product} em {location}.",
+    "As condições atuais não indicam impacto relevante sobre {product}."
+  ]
+}

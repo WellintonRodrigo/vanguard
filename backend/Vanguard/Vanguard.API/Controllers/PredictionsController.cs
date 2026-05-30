@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Vanguard.Application.DTOs.Predictions;
+using Vanguard.Application.Features.Insights;
 using Vanguard.Application.Features.Predictions.Services;
 using Vanguard.Application.Interfaces;
 namespace Vanguard.API.Controllers
@@ -10,10 +11,16 @@ namespace Vanguard.API.Controllers
     {
         private readonly PredictionService _predictionService;
         private readonly IWeatherProvider _weatherProvider;
-        public PredictionsController(PredictionService predictionService, IWeatherProvider weatherProvider)
+        private readonly InsightTemplateService _insightTemplateService;
+        public PredictionsController(
+            PredictionService predictionService, 
+            IWeatherProvider weatherProvider,
+            InsightTemplateService insightTemplateService
+            )
         {
             _predictionService = predictionService;
             _weatherProvider = weatherProvider;
+            _insightTemplateService = insightTemplateService;
         }
 
         [HttpPost("analize")]
@@ -37,6 +44,16 @@ namespace Vanguard.API.Controllers
                 location: "Joinville - SC"
                 );
             return Ok(result);
+        }
+        [HttpGet("insight-test")]// controller de teste para verificar se a geração de insights está funcionando
+        public IActionResult InsightTest()
+        {
+            var insight = _insightTemplateService.Generate(
+                key: "heavyRain",
+                product: "Tomate",
+                location: "Joinville - SC");
+
+            return Ok(new { insight });
         }
     }
 }
