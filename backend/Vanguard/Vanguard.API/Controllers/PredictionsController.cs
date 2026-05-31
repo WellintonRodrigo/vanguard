@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Vanguard.Application.DTOs.Predictions;
 using Vanguard.Application.Features.Insights;
+using Vanguard.Application.Features.Predictions.DTOs;
 using Vanguard.Application.Features.Predictions.Services;
 using Vanguard.Application.Interfaces;
 namespace Vanguard.API.Controllers
@@ -12,15 +12,18 @@ namespace Vanguard.API.Controllers
         private readonly PredictionService _predictionService;
         private readonly IWeatherProvider _weatherProvider;
         private readonly InsightTemplateService _insightTemplateService;
+        private readonly PredictionEngineService _predictionEngineService;
         public PredictionsController(
             PredictionService predictionService, 
             IWeatherProvider weatherProvider,
-            InsightTemplateService insightTemplateService
+            InsightTemplateService insightTemplateService,
+            PredictionEngineService predictionEngineService
             )
         {
             _predictionService = predictionService;
             _weatherProvider = weatherProvider;
             _insightTemplateService = insightTemplateService;
+            _predictionEngineService = predictionEngineService;
         }
 
         [HttpPost("analize")]
@@ -55,5 +58,13 @@ namespace Vanguard.API.Controllers
 
             return Ok(new { insight });
         }
+        [HttpPost("agriculture-prediction")]
+        public async Task<IActionResult> AgriculturePrediction(AgriculturePredictionRequestDto requestDto)
+        {
+            var result = await _predictionEngineService.AnalyzeAgricultureAsync(requestDto);
+
+            return Ok(result);
+        }
+
     }
 }

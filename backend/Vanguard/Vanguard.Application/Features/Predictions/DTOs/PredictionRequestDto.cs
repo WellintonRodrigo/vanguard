@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Vanguard.Application.DTOs.Predictions
+namespace Vanguard.Application.Features.Predictions.DTOs
 {
     public class PredictionRequestDto
     {

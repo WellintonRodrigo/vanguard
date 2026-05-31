@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Vanguard.Domain.Enums;
+﻿using Vanguard.Domain.Enums;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 
 namespace Vanguard.Domain.Entities
 {
@@ -12,7 +12,7 @@ namespace Vanguard.Domain.Entities
         public string TargetProduct { get; set; } = string.Empty;
 
         public decimal ImpactProbability { get; set; }
-
+        [BsonRepresentation(BsonType.String)]
         public Trend Trend { get; set; }
 
         public decimal EstimatedVariationPercent { get; set; }

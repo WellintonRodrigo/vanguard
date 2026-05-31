@@ -25,6 +25,7 @@ builder.Services.AddHttpClient<IWeatherProvider, OpenMeteoWeatherProvider>(
         client.Timeout = TimeSpan.FromSeconds(10);
     });
 builder.Services.AddSingleton<InsightTemplateService>();
+builder.Services.AddScoped<PredictionEngineService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();

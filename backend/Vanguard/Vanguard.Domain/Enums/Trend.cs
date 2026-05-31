@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Vanguard.Domain.Enums
+﻿namespace Vanguard.Domain.Enums
 {
     public enum Trend
     {
