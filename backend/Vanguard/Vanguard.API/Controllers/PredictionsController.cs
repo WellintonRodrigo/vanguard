@@ -58,7 +58,19 @@ namespace Vanguard.API.Controllers
 
             return Ok(new { insight });
         }
-        [HttpPost("agriculture-prediction")]
+
+        [HttpGet("forecast-test")] // controller de teste para verificar se a previsão de 7 dias agrícola está funcionando.
+        public async Task<IActionResult> ForecastTest()
+        {
+            var result = await _weatherProvider.GetWeatherForecastAsync(
+                latitude: -26.3044,
+                longitude: -48.8487,
+                location: "Joinville - SC");
+                    
+            return Ok(result);
+        }
+
+        [HttpPost("agriculture-prediction")] // Controller oficial para realizar a previsão agrícola, utilizando o PredictionEngineService para processar os dados e gerar a previsão
         public async Task<IActionResult> AgriculturePrediction(AgriculturePredictionRequestDto requestDto)
         {
             var result = await _predictionEngineService.AnalyzeAgricultureAsync(requestDto);
