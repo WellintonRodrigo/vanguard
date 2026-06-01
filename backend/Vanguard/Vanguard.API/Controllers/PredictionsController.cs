@@ -71,9 +71,22 @@ namespace Vanguard.API.Controllers
         }
 
         [HttpPost("agriculture-prediction")] // Controller oficial para realizar a previsão agrícola, utilizando o PredictionEngineService para processar os dados e gerar a previsão
-        public async Task<IActionResult> AgriculturePrediction(AgriculturePredictionRequestDto requestDto)
+        public async Task<IActionResult> AgriculturePrediction(
+            AgriculturePredictionRequestDto requestDto)
         {
-            var result = await _predictionEngineService.AnalyzeAgricultureAsync(requestDto);
+            var result = await _predictionEngineService
+                .AnalyzeAgricultureAsync(requestDto);
+
+            return Ok(result);
+        }
+
+        [HttpPost("agriculture/forecast")]
+
+        public async Task<IActionResult> AgricultureForecastPrediction(
+            [FromBody] AgriculturePredictionRequestDto requestDto)
+        {
+            var result = await _predictionEngineService
+                .AnalyzaAgricultureForecastAsync(requestDto);
 
             return Ok(result);
         }

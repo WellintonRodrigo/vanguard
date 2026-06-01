@@ -15,5 +15,21 @@
   "stable": [
     "Cenário climático estável para {product} em {location}.",
     "As condições atuais não indicam impacto relevante sobre {product}."
+  ],
+  "forecastHeavyRain": [
+    "Previsão de chuva acumulada elevada nos próximos dias pode impactar a oferta de {product} em {location}.",
+    "Risco climático relevante: múltiplos dias com chuva podem afetar colheita, transporte e disponibilidade de {product}."
+  ],
+  "forecastModerateRain": [
+    "Chuva moderada prevista para os próximos dias pode gerar oscilação leve no preço de {product}.",
+    "O cenário climático indica atenção moderada para {product} em {location}."
+  ],
+  "forecastLowRain": [
+    "Baixo volume de chuva previsto indica risco climático reduzido para {product} em {location}.",
+    "A previsão dos próximos dias não indica pressão climática relevante sobre {product}."
+  ],
+  "forecastStable": [
+    "A previsão climática dos próximos dias indica cenário estável para {product} em {location}.",
+    "Sem sinais climáticos relevantes no forecast, o impacto estimado sobre {product} permanece controlado."
   ]
 }
