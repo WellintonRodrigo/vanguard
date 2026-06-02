@@ -27,12 +27,27 @@ namespace Vanguard.Application.UseCases
                 allPrices.AddRange(prices);
             }
 
-            if (!allPrices.Any())
+            var newPrices = new List<CommodityPrice>();
+
+            foreach (var Price in allPrices) 
+            {
+                var alreadyExists = await _repository.ExistsAsnyc(
+                   Price.Commodity,
+                   Price.ReferenceDate,
+                   Price.Source,
+                   cancellationToken);
+
+                if (!alreadyExists)
+                    newPrices.Add(Price);
+            }
+
+
+            if (!newPrices.Any())
                 return 0;
 
-            await _repository.InsertManyAsync(allPrices, cancellationToken);
+            await _repository.InsertManyAsync(newPrices, cancellationToken);
 
-            return allPrices.Count;
+            return newPrices.Count;
 
         }
 }
