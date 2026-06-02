@@ -6,16 +6,24 @@ namespace Vanguard.Domain.Entities
 {
     public class CommodityPrice
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
-        public string Product { get; set; } = string.Empty;
+        public string Source { get; set; } = string.Empty;
 
-        public string Category { get; set; } = string.Empty;
+        public string Commodity { get; set; } = string.Empty;
 
-        public decimal PricePerKg { get; set; }
+        public string Unit { get; set; } = string.Empty;
 
-        public DateTime QuoteDate { get; set; }
+        public decimal PriceBrl { get; set; }
 
-        public string Region { get; set; } = string.Empty;
+        public decimal? PriceUsd { get; set; }
+
+        public decimal? DailyVariationPercent { get; set; }
+
+        public decimal? MonthlyVariationPercent { get; set; }
+
+        public DateTime ReferenceDate { get; set; }
+
+        public DateTime CollectedAt { get; set; } = DateTime.UtcNow;
     }
 }

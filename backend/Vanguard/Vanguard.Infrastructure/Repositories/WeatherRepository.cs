@@ -4,7 +4,7 @@ using System.Text;
 using Vanguard.Domain.Entities;
 using Vanguard.Domain.Interfaces;
 
-namespace Vanguard.Infrastructure.Persistence.Repositories
+namespace Vanguard.Infrastructure.Repositories
 {
     public class WeatherRepository : IWeatherRepository
     {

@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using Vanguard.Infrastructure.Persistence.Context;
 
 
-namespace Vanguard.Infrastructure.Persistence.Repositories
+namespace Vanguard.Infrastructure.Repositories
 {
     public class PredictionRepository : IPredictionRepository
     {

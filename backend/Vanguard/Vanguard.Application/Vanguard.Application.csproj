@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Vanguard.DataCollector\Vanguard.DataCollector.csproj" />
     <ProjectReference Include="..\Vanguard.Domain\Vanguard.Domain.csproj" />
   </ItemGroup>
 

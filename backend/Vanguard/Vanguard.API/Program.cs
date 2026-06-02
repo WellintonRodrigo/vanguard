@@ -1,11 +1,14 @@
 using Vanguard.Application.Features.Insights;
 using Vanguard.Application.Features.Predictions.Services;
 using Vanguard.Application.Interfaces;
+using Vanguard.Application.UseCases;
+using Vanguard.DataCollector.Collectors;
+using Vanguard.DataCollector.Collectors.Interfaces;
 using Vanguard.Domain.Interfaces;
 using Vanguard.Infrastructure.ExternalService.OpenMeteo;
 using Vanguard.Infrastructure.Persistence.Configurations;
 using Vanguard.Infrastructure.Persistence.Context;
-using Vanguard.Infrastructure.Persistence.Repositories;
+using Vanguard.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<PredictionService>();
+
 builder.Configuration.GetSection("MongoDb");
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection(MongoDbSettings.SectionName));
 builder.Services.AddSingleton<MongoDbContext>();
+
 builder.Services.AddScoped<IPredictionRepository, PredictionRepository>();
 builder.Services.AddHttpClient<IWeatherProvider, OpenMeteoWeatherProvider>(
     client =>
@@ -26,6 +31,9 @@ builder.Services.AddHttpClient<IWeatherProvider, OpenMeteoWeatherProvider>(
     });
 builder.Services.AddSingleton<InsightTemplateService>();
 builder.Services.AddScoped<PredictionEngineService>();
+builder.Services.AddScoped<ICommodityCollector, CepeaCommodityCollector>();
+builder.Services.AddScoped<ICommodityPriceRepository, CommodityPriceRepository>();
+builder.Services.AddScoped<CollectCommodityPricesUseCase>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();

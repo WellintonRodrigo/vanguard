@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="Vanguard.API/Vanguard.API.csproj" />
   <Project Path="Vanguard.Application/Vanguard.Application.csproj" />
+  <Project Path="Vanguard.DataCollector/Vanguard.DataCollector.csproj" Id="1564893d-a458-4362-9063-acefc52cea2f" />
   <Project Path="Vanguard.Domain/Vanguard.Domain.csproj" />
   <Project Path="Vanguard.Infrastructure/Vanguard.Infrastructure.csproj" />
   <Project Path="Vanguard.Worker/Vanguard.Worker.csproj" />
