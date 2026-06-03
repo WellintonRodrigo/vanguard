@@ -4,6 +4,7 @@ using Vanguard.Application.Interfaces;
 using Vanguard.Application.UseCases;
 using Vanguard.DataCollector.Collectors;
 using Vanguard.DataCollector.Collectors.Interfaces;
+using Vanguard.DataCollector.Parsers;
 using Vanguard.Domain.Interfaces;
 using Vanguard.Infrastructure.ExternalService.OpenMeteo;
 using Vanguard.Infrastructure.Persistence.Configurations;
@@ -34,6 +35,7 @@ builder.Services.AddScoped<PredictionEngineService>();
 builder.Services.AddScoped<ICommodityCollector, CepeaCommodityCollector>();
 builder.Services.AddScoped<ICommodityPriceRepository, CommodityPriceRepository>();
 builder.Services.AddScoped<CollectCommodityPricesUseCase>();
+builder.Services.AddScoped<CepeaCommodityParser>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
