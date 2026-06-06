@@ -4,29 +4,34 @@ using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 using Vanguard.DataCollector.Models;
 using Vanguard.Domain.Entities;
+using Vanguard.DataCollector.Helpers;
 
 namespace Vanguard.DataCollector.Parsers
 {
     // pega o HTML da página de cotações do site e extrai a data e o preço da commodity.
     public class NoticiasAgricolasCommodityParser
     {
-        public CommodityPrice? Parse(
+        public IReadOnlyCollection<CommodityPrice> Parse(
             string html,
             CommoditySource source)
         {
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            var cotacoes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'cotacao')]");
+            var document = new HtmlDocument();
+            document.LoadHtml(html);
+
+            var prices = new List<CommodityPrice>();
+
+            var cotacoes = document.DocumentNode
+                .SelectNodes("//div[contains(@class, 'cotacao')]");
 
             if (cotacoes is null)
-                return null;
+                return prices;
 
             foreach (var cotacao in cotacoes)
             {
-                var title = CleanText(
+                var title = TextHelper.Clean(
                     cotacao.SelectSingleNode(".//h2/a")?.InnerText ?? string.Empty);
 
-                if (!title.Contains(source.Commodity, StringComparison.OrdinalIgnoreCase))
+                if (string.IsNullOrWhiteSpace(title))
                     continue;
 
                 var table = cotacao.SelectSingleNode(".//table");
@@ -40,9 +45,9 @@ namespace Vanguard.DataCollector.Parsers
                 if (columns is null || columns.Count < 3)
                     continue;
 
-                var dateText = CleanText(columns[0].InnerText);
-                var priceText = CleanText(columns[1].InnerText);
-                var variationText = CleanText(columns[2].InnerText);
+                var dateText = TextHelper.Clean(columns[0].InnerText);
+                var priceText = TextHelper.Clean(columns[1].InnerText);
+                var variationText = TextHelper.Clean(columns[2].InnerText);
 
                 if (!DateTime.TryParseExact(
                         dateText,
@@ -54,19 +59,19 @@ namespace Vanguard.DataCollector.Parsers
                     continue;
                 }
 
-                if (!TryParseDecimal(priceText, out var priceBrl))
+                if (!BrazilianNumberParser.TryParseDecimal(priceText, out var priceBrl))
                     continue;
 
-                decimal? dailyVariation = TryParseDecimal(
+                decimal? dailyVariation = BrazilianNumberParser.TryParseDecimal(
                     variationText,
                     out var parsedVariation)
                         ? parsedVariation
                         : null;
 
-                return new CommodityPrice
+                prices.Add(new CommodityPrice
                 {
                     Source = source.Name,
-                    Commodity = source.Commodity,
+                    Commodity = title,
                     Unit = source.Unit,
                     PriceBrl = priceBrl,
                     PriceUsd = null,
@@ -74,38 +79,10 @@ namespace Vanguard.DataCollector.Parsers
                     MonthlyVariationPercent = null,
                     ReferenceDate = DateTime.SpecifyKind(referenceDate.Date, DateTimeKind.Utc),
                     CollectedAt = DateTime.UtcNow
-                };
+                });
             }
 
-            return null;
-        }
-
-        private static string CleanText(string value)
-        {
-            return Regex.Replace(value, @"\s+", " ").Trim();
-        }
-
-        private static decimal? TryParseDecimalValue(string value)
-        {
-            return TryParseDecimal(value, out var result)
-                ? result
-                : null;
-        }
-
-        private static bool TryParseDecimal(
-            string value,
-            out decimal result)
-        {
-            var cleanValue = CleanText(value)
-                .Replace("%", "")
-                .Replace("R$", "")
-                .Trim();
-
-            return decimal.TryParse(
-                cleanValue,
-                NumberStyles.Number,
-                new CultureInfo("pt-BR"),
-                out result);
+            return prices;
         }
 
     }

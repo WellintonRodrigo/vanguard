@@ -33,6 +33,8 @@ namespace Vanguard.DataCollector.Collectors
 
             foreach (var source in sources) 
             {
+                Console.WriteLine($"Coletando {source.Commodity} - {source.Url}");
+
                 using var request = new HttpRequestMessage(
                HttpMethod.Get,
                source.Url);
@@ -51,7 +53,13 @@ namespace Vanguard.DataCollector.Collectors
                     cancellationToken);
 
                 if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine(
+        $"Falha ao coletar {source.Commodity} - Status: {(int)response.StatusCode} - {response.ReasonPhrase} - URL: {source.Url}");
+
                     continue;
+                }
+                
 
                 var html = await response.Content.ReadAsStringAsync(
                     cancellationToken);
@@ -72,10 +80,15 @@ namespace Vanguard.DataCollector.Collectors
 
                     Console.WriteLine($"HTML salvo em: {filePath}");
                 }
-                var price = _parser.Parse(html, source);
+                var parsedPrice = _parser.Parse(html, source);
 
-                if (price is not null)
-                    prices.Add(price);               
+                if (!parsedPrice.Any())
+                {
+                    Console.WriteLine(
+                    $"Parser não encontrou preços para {source.Commodity} - {source.Url}");
+                    continue;
+                }
+                    prices.AddRange(parsedPrice);               
             }
             return prices;
         }

@@ -7,9 +7,9 @@
             {
                 new()
                 {
-                    Name ="NoticiasAgriculas",
+                    Name ="NoticiasAgricolas",
                     Commodity = "Soja",
-                    Url ="https://www.noticiasagricolas.com.br/cotacoes/soja/soja-indicador-cepea-esalq-porto-paranagua",
+                    Url ="https://www.noticiasagricolas.com.br/cotacoes/soja",
                     Unit = "Saca 60kg",
                     Enabled = true,
                 },
