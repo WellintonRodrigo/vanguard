@@ -11,6 +11,7 @@ using Vanguard.Infrastructure.Persistence.Configurations;
 using Vanguard.Infrastructure.Persistence.Context;
 using Vanguard.Infrastructure.Repositories;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -32,10 +33,11 @@ builder.Services.AddHttpClient<IWeatherProvider, OpenMeteoWeatherProvider>(
     });
 builder.Services.AddSingleton<InsightTemplateService>();
 builder.Services.AddScoped<PredictionEngineService>();
-builder.Services.AddScoped<ICommodityCollector, CepeaCommodityCollector>();
+
 builder.Services.AddScoped<ICommodityPriceRepository, CommodityPriceRepository>();
 builder.Services.AddScoped<CollectCommodityPricesUseCase>();
-builder.Services.AddScoped<CepeaCommodityParser>();
+builder.Services.AddScoped<NoticiasAgricolasCommodityParser>();
+builder.Services.AddHttpClient<ICommodityCollector, NoticiasAgricolasCommodityCollector>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
