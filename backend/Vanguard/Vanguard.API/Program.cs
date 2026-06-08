@@ -42,7 +42,7 @@ builder.Services.AddScoped<CollectCommodityPricesUseCase>();
 builder.Services.AddScoped<NoticiasAgricolasCommodityParser>();
 builder.Services.AddScoped<CheckCollectorHealthUseCase>();
 builder.Services.AddScoped<IPredictionRepository, PredictionRepository>();
-
+builder.Services.AddScoped<ICollectorHealthLogRepository, CollectorHealthLogRepository>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();

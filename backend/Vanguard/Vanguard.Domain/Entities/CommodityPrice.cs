@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Vanguard.Domain.Entities
+﻿namespace Vanguard.Domain.Entities
 {
     public class CommodityPrice
     {
