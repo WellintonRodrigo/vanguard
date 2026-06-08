@@ -28,8 +28,4 @@
     <ProjectReference Include="..\Vanguard.Infrastructure\Vanguard.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Debug\" />
-  </ItemGroup>
-
 </Project>

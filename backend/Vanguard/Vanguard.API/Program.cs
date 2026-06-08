@@ -4,6 +4,8 @@ using Vanguard.Application.Interfaces;
 using Vanguard.Application.UseCases;
 using Vanguard.DataCollector.Collectors;
 using Vanguard.DataCollector.Collectors.Interfaces;
+using Vanguard.DataCollector.Health.HealthCheckers;
+using Vanguard.DataCollector.Health.Interfaces;
 using Vanguard.DataCollector.Parsers;
 using Vanguard.Domain.Interfaces;
 using Vanguard.Infrastructure.ExternalService.OpenMeteo;
@@ -24,20 +26,23 @@ builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection(MongoDbSettings.SectionName));
 builder.Services.AddSingleton<MongoDbContext>();
 
-builder.Services.AddScoped<IPredictionRepository, PredictionRepository>();
+builder.Services.AddHttpClient<ICommodityCollector, NoticiasAgricolasCommodityCollector>();
+builder.Services.AddHttpClient<ICollectorHealthChecker, NoticiasAgricolasHealthChecker>();
 builder.Services.AddHttpClient<IWeatherProvider, OpenMeteoWeatherProvider>(
     client =>
     {
         client.BaseAddress = new Uri("https://api.open-meteo.com/v1/");
         client.Timeout = TimeSpan.FromSeconds(10);
     });
+
 builder.Services.AddSingleton<InsightTemplateService>();
 builder.Services.AddScoped<PredictionEngineService>();
-
 builder.Services.AddScoped<ICommodityPriceRepository, CommodityPriceRepository>();
 builder.Services.AddScoped<CollectCommodityPricesUseCase>();
 builder.Services.AddScoped<NoticiasAgricolasCommodityParser>();
-builder.Services.AddHttpClient<ICommodityCollector, NoticiasAgricolasCommodityCollector>();
+builder.Services.AddScoped<CheckCollectorHealthUseCase>();
+builder.Services.AddScoped<IPredictionRepository, PredictionRepository>();
+
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
