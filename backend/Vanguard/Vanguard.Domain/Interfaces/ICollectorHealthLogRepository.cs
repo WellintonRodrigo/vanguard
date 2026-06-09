@@ -7,5 +7,10 @@ namespace Vanguard.Domain.Interfaces
         Task InsertManyAsync(
         IReadOnlyCollection<CollectorHealthLog> logs,
         CancellationToken cancellationToken = default);
+
+        Task<IReadOnlyCollection<CollectorHealthLog>>GetHistoryAsync(
+    CancellationToken cancellationToken = default);
+
+        
     }
 }

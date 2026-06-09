@@ -15,6 +15,16 @@ namespace Vanguard.Infrastructure.Repositories
                 ("collector_health_logs");
         }
 
+        public async Task<IReadOnlyCollection<CollectorHealthLog>> GetHistoryAsync(
+            CancellationToken cancellationToken = default)
+        {
+            return await _collection
+                .Find(_ => true)
+                .SortByDescending(x => x.CheckedAt)
+                .Limit(100)
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task InsertManyAsync(
           IReadOnlyCollection<CollectorHealthLog> logs,
           CancellationToken cancellationToken = default)

@@ -1,3 +1,4 @@
+using Vanguard.Application.Features.CollectorHealth.UseCases;
 using Vanguard.Application.Features.Insights;
 using Vanguard.Application.Features.Predictions.Services;
 using Vanguard.Application.Interfaces;
@@ -43,6 +44,8 @@ builder.Services.AddScoped<NoticiasAgricolasCommodityParser>();
 builder.Services.AddScoped<CheckCollectorHealthUseCase>();
 builder.Services.AddScoped<IPredictionRepository, PredictionRepository>();
 builder.Services.AddScoped<ICollectorHealthLogRepository, CollectorHealthLogRepository>();
+builder.Services.AddScoped<GetCollectorHealthHistoryUseCase>();
+builder.Services.AddScoped<GetCollectorHealthSummaryUseCase>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
