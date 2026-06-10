@@ -2,6 +2,7 @@
 using Vanguard.Domain.Interfaces;
 using MongoDB.Driver;
 using Vanguard.Infrastructure.Persistence.Context;
+using Vanguard.Application.Interfaces;
 
 
 namespace Vanguard.Infrastructure.Repositories

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Vanguard.Application.Features.Predictions.DTOs;
+﻿using Vanguard.Application.Features.Predictions.DTOs;
 using Vanguard.Domain.Entities;
 using Vanguard.Domain.Enums;
 using Vanguard.Domain.Interfaces;

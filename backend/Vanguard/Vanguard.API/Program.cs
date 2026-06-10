@@ -46,6 +46,7 @@ builder.Services.AddScoped<IPredictionRepository, PredictionRepository>();
 builder.Services.AddScoped<ICollectorHealthLogRepository, CollectorHealthLogRepository>();
 builder.Services.AddScoped<GetCollectorHealthHistoryUseCase>();
 builder.Services.AddScoped<GetCollectorHealthSummaryUseCase>();
+builder.Services.AddScoped<IWorkerExecutionLogRepository, WorkerExecutionLogRepository>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();

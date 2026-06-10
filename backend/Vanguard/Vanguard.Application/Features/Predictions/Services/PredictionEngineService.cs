@@ -2,8 +2,8 @@
 using Vanguard.Application.Features.Predictions.DTOs;
 using Vanguard.Application.Interfaces;
 using Vanguard.Domain.Entities;
-using Vanguard.Domain.Interfaces;
 using Vanguard.Domain.Enums;
+using Vanguard.Domain.Interfaces;
 
 namespace Vanguard.Application.Features.Predictions.Services
 {
