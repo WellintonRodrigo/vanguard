@@ -80,7 +80,6 @@ namespace Vanguard.Worker.Workers
                     },stoppingToken);
 
                     _logger.LogInformation(" Ciclo concluído com sucesso");
-                    _logger.LogInformation(" Duração: {DurationMs}ms", stopwatch.ElapsedMilliseconds);
                     _logger.LogInformation(" Próxima execução em {IntervalMinutes} minuto(s)", intervalMinutes);
                     _logger.LogInformation("==============================================");
 
