@@ -40,6 +40,54 @@ namespace Vanguard.Infrastructure.Repositories
            await _collection.InsertManyAsync(prices, cancellationToken: cancellationToken);
         }
 
+        public async Task<CommodityPrice?> GetLatestAsync(
+             CancellationToken cancellationToken = default)
+        {
+            return await _collection
+                .Find(Builders<CommodityPrice>.Filter.Empty)
+                .SortByDescending(x => x.ReferenceDate)
+                .ThenByDescending(x => x.CollectedAt)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
 
+        public async Task<CommodityPrice?> GetLatestByCommodityAsync(
+           string commodity, CancellationToken cancellationToken = default)
+        {
+            var filter = Builders<CommodityPrice>.Filter.Eq(
+                x => x.Commodity, commodity);
+
+            return await _collection
+                .Find(filter)
+                .SortByDescending(x => x.ReferenceDate)
+                .ThenByDescending(x => x.CollectedAt)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<IReadOnlyCollection<CommodityPrice>> GetHistoryAsync(
+            string commodity, int days, CancellationToken cancellationToken = default)
+        {
+            var fromDate = DateTime.UtcNow.Date.AddDays(-days);
+
+            var filter = Builders<CommodityPrice>.Filter.And(
+                Builders<CommodityPrice>.Filter.Eq(x => x.Commodity, commodity),
+                Builders<CommodityPrice>.Filter.Gte(x => x.ReferenceDate , fromDate)
+                );
+
+            return await _collection
+                 .Find(filter)
+                 .SortByDescending(x => x.ReferenceDate)
+                 .ThenByDescending(x => x.CollectedAt)
+                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task<IReadOnlyCollection<CommodityPrice>> GetAllAsync(
+            CancellationToken cancellationToken = default)
+        {
+            return await _collection
+        .Find(Builders<CommodityPrice>.Filter.Empty)
+        .SortByDescending(x => x.ReferenceDate)
+        .ThenByDescending(x => x.CollectedAt)
+        .ToListAsync(cancellationToken);
+        }
     }
 }

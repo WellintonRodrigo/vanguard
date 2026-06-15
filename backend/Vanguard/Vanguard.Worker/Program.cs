@@ -1,4 +1,6 @@
-﻿using Vanguard.Application.UseCases;
+﻿using Vanguard.Application.Features.Commodities.Services;
+using Vanguard.Application.Features.Insights;
+using Vanguard.Application.UseCases;
 using Vanguard.DataCollector.Collectors;
 using Vanguard.DataCollector.Collectors.Interfaces;
 using Vanguard.DataCollector.Health.HealthCheckers;
@@ -26,6 +28,8 @@ builder.Services.Configure<MongoDbSettings>(
 
 builder.Services.AddSingleton<MongoDbContext>();
 
+
+
 builder.Services.AddScoped<ICommodityPriceRepository, CommodityPriceRepository>();
 builder.Services.AddScoped<ICollectorHealthLogRepository, CollectorHealthLogRepository>();
 builder.Services.AddScoped<CollectCommodityPricesUseCase>();
@@ -34,7 +38,7 @@ builder.Services.AddScoped<NoticiasAgricolasCommodityParser>();
 builder.Services.AddHttpClient<ICommodityCollector, NoticiasAgricolasCommodityCollector>();
 builder.Services.AddHttpClient<ICollectorHealthChecker, NoticiasAgricolasHealthChecker>();
 builder.Services.AddScoped<IWorkerExecutionLogRepository, WorkerExecutionLogRepository>();
-
+builder.Services.AddScoped<DataFreshnessService>();
 
 
 builder.Services.AddHostedService<DataCollectionWorker>();

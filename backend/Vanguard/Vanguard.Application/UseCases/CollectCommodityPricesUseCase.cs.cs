@@ -1,4 +1,5 @@
 ﻿using Vanguard.DataCollector.Collectors.Interfaces;
+using Vanguard.DataCollector.Models;
 using Vanguard.Domain.Entities;
 using Vanguard.Domain.Interfaces;
 
@@ -8,6 +9,7 @@ namespace Vanguard.Application.UseCases
     {
         private readonly IEnumerable<ICommodityCollector> _collectors;
         private readonly ICommodityPriceRepository _repository;
+
 
         public CollectCommodityPricesUseCase(
             IEnumerable<ICommodityCollector>
@@ -28,6 +30,7 @@ namespace Vanguard.Application.UseCases
             }
 
             var newPrices = new List<CommodityPrice>();
+                
 
             foreach (var Price in allPrices) 
             {

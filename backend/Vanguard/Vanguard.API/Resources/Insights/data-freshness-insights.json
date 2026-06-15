@@ -1,0 +1,17 @@
+{
+  "healthy": [
+    "Dados atualizados recentemente.",
+    "Fonte com dados atuais e adequada para análise.",
+    "Informação recente, sem sinais relevantes de desatualização."
+  ],
+  "warning": [
+    "Dados sem atualização há {days} dias.",
+    "Fonte com atualização moderadamente antiga: {days} dias sem mudança.",
+    "Atenção: os dados podem estar começando a ficar defasados."
+  ],
+  "critical": [
+    "Dados possivelmente desatualizados há {days} dias.",
+    "Recomenda-se verificar a fonte antes de usar esta informação.",
+    "Alerta crítico: a commodity está há {days} dias sem atualização relevante."
+  ]
+}

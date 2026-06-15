@@ -1,4 +1,5 @@
 using Vanguard.Application.Features.CollectorHealth.UseCases;
+using Vanguard.Application.Features.Commodities.Services;
 using Vanguard.Application.Features.Insights;
 using Vanguard.Application.Features.Predictions.Services;
 using Vanguard.Application.Interfaces;
@@ -37,6 +38,8 @@ builder.Services.AddHttpClient<IWeatherProvider, OpenMeteoWeatherProvider>(
     });
 
 builder.Services.AddSingleton<InsightTemplateService>();
+builder.Services.AddSingleton<DataFreshnessInsightTemplateService>();
+
 builder.Services.AddScoped<PredictionEngineService>();
 builder.Services.AddScoped<ICommodityPriceRepository, CommodityPriceRepository>();
 builder.Services.AddScoped<CollectCommodityPricesUseCase>();
@@ -47,6 +50,7 @@ builder.Services.AddScoped<ICollectorHealthLogRepository, CollectorHealthLogRepo
 builder.Services.AddScoped<GetCollectorHealthHistoryUseCase>();
 builder.Services.AddScoped<GetCollectorHealthSummaryUseCase>();
 builder.Services.AddScoped<IWorkerExecutionLogRepository, WorkerExecutionLogRepository>();
+builder.Services.AddScoped<DataFreshnessService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();

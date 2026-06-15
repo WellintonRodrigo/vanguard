@@ -17,5 +17,24 @@ namespace Vanguard.Domain.Interfaces
             DateTime referenceDate,
             string source,
             CancellationToken cancellationToken = default);
+
+        // =======================
+        // CONSULTAS
+        // =======================
+
+        Task<IReadOnlyCollection<CommodityPrice>> GetAllAsync(
+        CancellationToken cancellationToken = default);
+
+        Task<CommodityPrice?> GetLatestAsync(
+            CancellationToken cancellationToken = default);
+
+        Task<CommodityPrice?> GetLatestByCommodityAsync(
+            string commodity,
+            CancellationToken cancellationToken = default);
+
+        Task<IReadOnlyCollection<CommodityPrice>> GetHistoryAsync(
+            string commodity,
+            int days,
+            CancellationToken cancellationToken = default);
     }
 }

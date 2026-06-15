@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Vanguard.Domain.Entities;
+﻿using Vanguard.Domain.Entities;
 
 namespace Vanguard.Domain.Interfaces
 {

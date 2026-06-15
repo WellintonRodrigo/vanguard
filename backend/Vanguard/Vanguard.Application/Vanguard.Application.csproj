@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Commodities\" />
     <Folder Include="Features\Weather\Services\" />
   </ItemGroup>
 
