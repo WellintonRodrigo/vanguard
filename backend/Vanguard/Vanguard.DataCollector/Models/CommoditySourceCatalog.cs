@@ -2,25 +2,25 @@
 {
     public class CommoditySourceCatalog
     {
-        public static IReadOnlyCollection<CommoditySource> sources =>
+        public static IReadOnlyCollection<CommoditySource> Sources =>
             new List<CommoditySource>
             {
                 new()
                 {
-                    Name ="NoticiasAgricolas",
+                    SourceKey ="NoticiasAgricolas",
                     Commodity = "Soja",
                     Url ="https://www.noticiasagricolas.com.br/cotacoes/soja",
                     Unit = "Saca 60kg",
-                    Enabled = true,
+                    IsEnabled = true,
                 },
 
                 new()
                 {
-                Name = "NoticiasAgricolas",
+                SourceKey = "NoticiasAgricolas",
                 Commodity = "Milho",
                 Url = "https://www.noticiasagricolas.com.br/cotacoes/milho",
                 Unit = "Saca 60kg",
-                Enabled = true
+                IsEnabled = true
                 }
             };
     }

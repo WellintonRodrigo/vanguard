@@ -24,8 +24,8 @@ namespace Vanguard.DataCollector.Health.HealthCheckers
         {
             var result = new List<CollectorHealthResult>();
 
-            var sources = CommoditySourceCatalog.sources
-                .Where(x=> x.Enabled && x.Name == "NoticiasAgricolas")
+            var sources = CommoditySourceCatalog.Sources
+                .Where(x=> x.IsEnabled && x.Name == "NoticiasAgricolas")
                 .ToList();
 
             foreach(var source in sources)
@@ -56,7 +56,7 @@ namespace Vanguard.DataCollector.Health.HealthCheckers
                             Source = source.Name,
                             Commodity = source.Commodity,
                             Url = source.Url,
-                            Status = CollectorHealthStatus.Unhealthy,
+                            Status = CollectorHealthStatus.Critical,
                             HttpStatusCode = (int)response.StatusCode,
                             RecordsFound = 0,
                             ResponseTimeMs = stopwatch.ElapsedMilliseconds,
@@ -72,7 +72,7 @@ namespace Vanguard.DataCollector.Health.HealthCheckers
 
                     var status = parsedPrices.Any()
                         ? CollectorHealthStatus.Healthy
-                        : CollectorHealthStatus.Unhealthy;
+                        : CollectorHealthStatus.Critical;
 
                     result.Add(new CollectorHealthResult
                     {
@@ -96,7 +96,7 @@ namespace Vanguard.DataCollector.Health.HealthCheckers
                         Source = source.Name,
                         Commodity = source.Commodity,
                         Url = source.Url,
-                        Status = CollectorHealthStatus.Unhealthy,
+                        Status = CollectorHealthStatus.Critical,
                         HttpStatusCode = null,
                         RecordsFound = 0,
                         ResponseTimeMs = stopwatch.ElapsedMilliseconds,

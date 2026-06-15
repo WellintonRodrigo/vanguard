@@ -6,8 +6,9 @@ namespace Vanguard.DataCollector.Health.Enuns
 {
     public enum CollectorHealthStatus
     {
-        Healthy = 1,// Sucesso/Saudável
+        Unknown = 0, // default
+        Healthy = 1, //Sucesso/SaudávelSucesso/Saudável
         Warning = 2,// Aviso/Alerta
-        Unhealthy = 3// Crítico/Não saudável
+        Critical = 3 // Crítico/Não saudável
     }
 }

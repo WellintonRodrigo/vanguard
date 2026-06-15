@@ -27,8 +27,8 @@ namespace Vanguard.DataCollector.Collectors
         {
             var prices = new List<CommodityPrice>();
 
-            var sources = CommoditySourceCatalog.sources
-                .Where(x=> x.Enabled && x.Name== "NoticiasAgricolas")
+            var sources = CommoditySourceCatalog.Sources
+                .Where(x=> x.IsEnabled && x.Name== "NoticiasAgricolas")
                 .ToList();
 
             foreach (var source in sources) 
