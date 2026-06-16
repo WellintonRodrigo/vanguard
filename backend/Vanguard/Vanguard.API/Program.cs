@@ -1,5 +1,6 @@
 using Vanguard.Application.Features.CollectorHealth.UseCases;
 using Vanguard.Application.Features.Commodities.Services;
+using Vanguard.Application.Features.Commodities.UseCases;
 using Vanguard.Application.Features.Insights;
 using Vanguard.Application.Features.Predictions.Services;
 using Vanguard.Application.Interfaces;
@@ -51,6 +52,9 @@ builder.Services.AddScoped<GetCollectorHealthHistoryUseCase>();
 builder.Services.AddScoped<GetCollectorHealthSummaryUseCase>();
 builder.Services.AddScoped<IWorkerExecutionLogRepository, WorkerExecutionLogRepository>();
 builder.Services.AddScoped<DataFreshnessService>();
+builder.Services.AddScoped<GetAllCommodityPricesUseCase>();
+builder.Services.AddScoped<GetLatestCommodityPriceUseCase>();
+builder.Services.AddScoped<GetCommodityHistoryUseCase>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();

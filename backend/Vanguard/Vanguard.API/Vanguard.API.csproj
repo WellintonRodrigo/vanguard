@@ -9,10 +9,14 @@
 
   <ItemGroup>
     <Content Remove="Resources\Insights\agriculture-insights.json" />
+    <Content Remove="Resources\Insights\data-freshness-insights.json" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Resources\Insights\agriculture-insights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Insights\data-freshness-insights.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

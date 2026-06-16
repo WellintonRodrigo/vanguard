@@ -15,6 +15,7 @@ namespace Vanguard.DataCollector.Parsers
             string html,
             CommoditySource source)
         {
+
             var document = new HtmlDocument();
             document.LoadHtml(html);
 
@@ -41,7 +42,7 @@ namespace Vanguard.DataCollector.Parsers
 
                 var columns = firstRow?
                     .SelectNodes("./td");
-
+                
                 if (columns is null || columns.Count < 3)
                     continue;
 
@@ -59,15 +60,20 @@ namespace Vanguard.DataCollector.Parsers
                     continue;
                 }
 
-                if (!BrazilianNumberParser.TryParseDecimal(priceText, out var priceBrl))
+                
+                if (!BrazilianNumberParser.TryParseDecimal(priceText, out var priceBrl)) 
+                {
+                    Console.WriteLine($"ERRO AO CONVERTER PREÇO: '{priceText}'");
                     continue;
+                }
+                    
 
                 decimal? dailyVariation = BrazilianNumberParser.TryParseDecimal(
                     variationText,
                     out var parsedVariation)
                         ? parsedVariation
                         : null;
-
+               
                 prices.Add(new CommodityPrice
                 {
                     Source = source.Name,

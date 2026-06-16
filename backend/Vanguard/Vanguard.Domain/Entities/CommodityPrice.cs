@@ -8,6 +8,8 @@
 
         public string Commodity { get; set; } = string.Empty;
 
+        public string Market { get; set; } = string.Empty;
+
         public string Unit { get; set; } = string.Empty;
 
         public decimal PriceBrl { get; set; }

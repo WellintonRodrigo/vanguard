@@ -12,7 +12,7 @@ namespace Vanguard.Application.Features.Insights
             AppContext.BaseDirectory,
 
             "Resources",
-            "insights",
+            "Insights",
             "agriculture-insights.json");
 
             Console.WriteLine( filePath );

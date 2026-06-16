@@ -25,11 +25,14 @@ namespace Vanguard.DataCollector.Collectors
         public async Task<IReadOnlyCollection<CommodityPrice>> CollectAsync(
             CancellationToken cancellationToken = default)
         {
+            Console.WriteLine("Collector NoticiasAgricolas iniciado");
             var prices = new List<CommodityPrice>();
 
             var sources = CommoditySourceCatalog.Sources
-                .Where(x=> x.IsEnabled && x.Name== "NoticiasAgricolas")
+                .Where(x=> x.IsEnabled && 
+                x.SourceKey.Equals("NoticiasAgricolas", StringComparison.OrdinalIgnoreCase))
                 .ToList();
+            
 
             foreach (var source in sources) 
             {
@@ -51,6 +54,7 @@ namespace Vanguard.DataCollector.Collectors
                 var response = await _httpClient.SendAsync(
                     request,
                     cancellationToken);
+
 
                 if (!response.IsSuccessStatusCode)
                 {

@@ -13,12 +13,12 @@ namespace Vanguard.Application.Features.Insights
             AppContext.BaseDirectory,
 
             "Resources",
-            "insights",
+            "Insights",
             "data-freshness-insights.json");
 
             Console.WriteLine(filePath);
 
-            if (File.Exists(filePath))
+            if (!File.Exists(filePath))
                 throw new FileNotFoundException(
                  $"O arquivo de templates de freshness não foi encontrado: {filePath}");
 

@@ -25,6 +25,8 @@ namespace Vanguard.Application.UseCases
 
             foreach (var collector in _collectors)
             {
+                Console.WriteLine($"Executando collector: {collector.GetType().Name}");
+
                 var prices = await collector.CollectAsync(cancellationToken);
                 allPrices.AddRange(prices);
             }
