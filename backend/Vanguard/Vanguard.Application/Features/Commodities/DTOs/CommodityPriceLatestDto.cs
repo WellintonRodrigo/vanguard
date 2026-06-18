@@ -7,8 +7,8 @@
         public string Market { get; set; } = string.Empty;
         public string Unit { get; set; } = string.Empty;
 
-        public decimal PriceBuy { get; set; }
-        public decimal? PriceSell { get; set; }
+        public decimal PriceBrl { get; set; }
+        public decimal? PriceUsd { get; set; }
 
         public decimal? DailyVariationPercent { get; set; }
         public decimal? MonthlyVariationPercent { get; set; }

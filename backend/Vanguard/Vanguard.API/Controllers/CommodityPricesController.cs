@@ -13,17 +13,23 @@ namespace Vanguard.API.Controllers
         private readonly GetAllCommodityPricesUseCase _getAllUseCase;
         private readonly GetLatestCommodityPriceUseCase _getLatestUseCase;
         private readonly GetCommodityHistoryUseCase _getHistoryUseCase;
+        private readonly GetCommoditiesUseCase _getCommoditiesUseCase;
+        private readonly GetCommodityPricesSummaryUseCase _getSummaryUseCase;
 
         public CommodityPricesController(
             CollectCommodityPricesUseCase collectUseCase,
             GetAllCommodityPricesUseCase getAllUseCase,
             GetLatestCommodityPriceUseCase getLatestUseCase,
-            GetCommodityHistoryUseCase getHistoryUseCase)
+            GetCommodityHistoryUseCase getHistoryUseCase,
+            GetCommoditiesUseCase getCommoditiesUse,
+            GetCommodityPricesSummaryUseCase getSummaryUseCase)
         {
             _collectUseCase = collectUseCase;
             _getAllUseCase = getAllUseCase;
             _getHistoryUseCase = getHistoryUseCase;
             _getLatestUseCase = getLatestUseCase;
+            _getCommoditiesUseCase = getCommoditiesUse;
+            _getSummaryUseCase = getSummaryUseCase;
         }
 
         [HttpPost("collect")]
@@ -76,6 +82,25 @@ namespace Vanguard.API.Controllers
                 cancellationToken);
 
             return Ok(prices);
+        }
+
+        [HttpGet("commodities")]
+        public async Task<IActionResult> GetCommodities(
+        CancellationToken cancellationToken)
+        {
+            var commodities = await _getCommoditiesUseCase.ExecuteAsync(
+                cancellationToken);
+
+            return Ok(commodities);
+        }
+
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetSummary(
+        CancellationToken cancellationToken)
+        {
+            var summary = await _getSummaryUseCase.ExecuteAsync(cancellationToken);
+
+            return Ok(summary);
         }
     }
 }

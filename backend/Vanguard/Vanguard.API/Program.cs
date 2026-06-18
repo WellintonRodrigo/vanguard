@@ -55,6 +55,8 @@ builder.Services.AddScoped<DataFreshnessService>();
 builder.Services.AddScoped<GetAllCommodityPricesUseCase>();
 builder.Services.AddScoped<GetLatestCommodityPriceUseCase>();
 builder.Services.AddScoped<GetCommodityHistoryUseCase>();
+builder.Services.AddScoped<GetCommoditiesUseCase>();
+builder.Services.AddScoped<GetCommodityPricesSummaryUseCase>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();

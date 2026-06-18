@@ -89,5 +89,43 @@ namespace Vanguard.Infrastructure.Repositories
         .ThenByDescending(x => x.CollectedAt)
         .ToListAsync(cancellationToken);
         }
+
+        public async Task<List<string>> GetCommoditiesAsync(
+    CancellationToken cancellationToken = default)
+        {
+            return await _collection
+                .Distinct<string>(
+                    "Commodity",
+                    FilterDefinition<CommodityPrice>.Empty)
+                .ToListAsync(cancellationToken);
+        }
+        public async Task<List<string>> GetSourcesAsync(
+        CancellationToken cancellationToken = default)
+        {
+            return await _collection
+                .Distinct<string>(
+                    "Source",
+                    FilterDefinition<CommodityPrice>.Empty)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<long> CountAsync(
+        CancellationToken cancellationToken = default)
+        {
+            return await _collection.CountDocumentsAsync(
+                FilterDefinition<CommodityPrice>.Empty,
+                cancellationToken: cancellationToken);
+        }
+
+        public async Task<DateTime?> GetLastCollectionDateAsync(
+        CancellationToken cancellationToken = default)
+        {
+            var latest = await _collection
+                .Find(FilterDefinition<CommodityPrice>.Empty)
+                .SortByDescending(x => x.CollectedAt)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            return latest?.CollectedAt;
+        }
     }
 }

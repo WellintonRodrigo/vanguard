@@ -7,14 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Vanguard.Application\Vanguard.Application.csproj" />
+    <ProjectReference Include="..\Vanguard.DataCollector\Vanguard.DataCollector.csproj" />
     <ProjectReference Include="..\Vanguard.Domain\Vanguard.Domain.csproj" />
   </ItemGroup>
 

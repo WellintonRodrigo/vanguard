@@ -36,5 +36,17 @@ namespace Vanguard.Domain.Interfaces
             string commodity,
             int days,
             CancellationToken cancellationToken = default);
+
+        Task<List<string>> GetCommoditiesAsync(
+           CancellationToken cancellationToken = default);
+
+        Task<List<string>> GetSourcesAsync(
+        CancellationToken cancellationToken = default);
+
+        Task<long> CountAsync(
+            CancellationToken cancellationToken = default);
+
+        Task<DateTime?> GetLastCollectionDateAsync(
+            CancellationToken cancellationToken = default);
     }
 }

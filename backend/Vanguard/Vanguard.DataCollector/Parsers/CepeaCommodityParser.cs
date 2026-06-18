@@ -42,6 +42,8 @@ namespace Vanguard.DataCollector.Parsers
                 var monthlyVariation = ParsePercent(lines[i + 3]);
                 var priceUsd = ParseDecimal(lines[i + 4]);
 
+                
+
                 prices.Add(new CommodityPrice
                 {
                     Source = "CEPEA",

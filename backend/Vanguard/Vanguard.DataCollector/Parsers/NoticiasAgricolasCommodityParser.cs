@@ -1,10 +1,9 @@
 ﻿using HtmlAgilityPack;
 using System.Globalization;
-using System.Reflection.Metadata;
-using System.Text.RegularExpressions;
 using Vanguard.DataCollector.Models;
 using Vanguard.Domain.Entities;
 using Vanguard.DataCollector.Helpers;
+using Vanguard.DataCollector.Normalizers;
 
 namespace Vanguard.DataCollector.Parsers
 {
@@ -31,6 +30,10 @@ namespace Vanguard.DataCollector.Parsers
             {
                 var title = TextHelper.Clean(
                     cotacao.SelectSingleNode(".//h2/a")?.InnerText ?? string.Empty);
+               
+                var commodity = CommodityNormalizer.Normalizers(title);
+
+                var markert = MarketNormalizer.Normalize(title, commodity);
 
                 if (string.IsNullOrWhiteSpace(title))
                     continue;
@@ -73,11 +76,12 @@ namespace Vanguard.DataCollector.Parsers
                     out var parsedVariation)
                         ? parsedVariation
                         : null;
-               
+
                 prices.Add(new CommodityPrice
                 {
-                    Source = source.Name,
-                    Commodity = title,
+                    Source = source.SourceKey,
+                    Commodity = commodity,
+                    Market = markert,
                     Unit = source.Unit,
                     PriceBrl = priceBrl,
                     PriceUsd = null,
