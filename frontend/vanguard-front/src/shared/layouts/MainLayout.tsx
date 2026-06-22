@@ -22,7 +22,7 @@ export function MainLayout() {
     <Layout className="min-h-screen bg-slate-950">
       <Sider theme="dark" width={260} className="bg-slate-950">
         <div className="px-6 py-5 text-xl font-bold text-slate-100">
-          🚀 Vanguard
+           Vanguard
         </div>
 
         <Menu
@@ -32,14 +32,10 @@ export function MainLayout() {
           onClick={handleMenuClick}
           items={[
             { key: "/", icon: <DashboardOutlined />, label: "Dashboard" },
-            {
-              key: "/commodities",
-              icon: <DatabaseOutlined />,
-              label: "Commodities",
-            },
-            { key: "/weather", icon: <CloudOutlined />, label: "Weather" },
-            { key: "/freshness", icon: <SyncOutlined />, label: "Freshness" },
-            { key: "/health", icon: <HeartOutlined />, label: "Health" },
+            { key: "/commodities", icon: <DatabaseOutlined />, label: "Commodities",},
+            { key: "/weather", icon: <CloudOutlined />, label: "Clima" },
+            { key: "/freshness", icon: <SyncOutlined />, label: "Atualização dos Dados" },
+            { key: "/health", icon: <HeartOutlined />, label: "Saúde do Sistema" },
           ]}
         />
       </Sider>
