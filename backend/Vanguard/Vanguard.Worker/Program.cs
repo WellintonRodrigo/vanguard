@@ -39,6 +39,7 @@ builder.Services.AddHttpClient<ICommodityCollector, NoticiasAgricolasCommodityCo
 builder.Services.AddHttpClient<ICollectorHealthChecker, NoticiasAgricolasHealthChecker>();
 builder.Services.AddScoped<IWorkerExecutionLogRepository, WorkerExecutionLogRepository>();
 builder.Services.AddScoped<DataFreshnessService>();
+builder.Services.AddScoped<DataFreshnessInsightTemplateService>();
 
 
 builder.Services.AddHostedService<DataCollectionWorker>();
