@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {apiClient} from '../../shared/api/apiClient';
  
 
@@ -16,12 +16,31 @@ export interface CommodityPrice {
   referenceDate: string;
   collectedAt: string;
 }
+function getLatestPricesPerMarket(items: CommodityPrice[]): CommodityPrice[]{
+  
+      const map = new Map<string, CommodityPrice>();
+
+  items.forEach((item) => {
+    // Cria uma chave única por commodity e mercado
+    const key = `${item.commodity}-${item.market}`;
+    const existing = map.get(key);
+
+    // Substitui se o item da iteração tiver uma data de referência mais nova
+    if (!existing || new Date(item.referenceDate) > new Date(existing.referenceDate)) {
+      map.set(key, item);
+    }
+  });
+  return Array.from(map.values());
+};
 
 export const CommoditiesPage: React.FC = () => {
   const [data, setData] = useState<CommodityPrice[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCommodity, setSelectedCommodity] = useState<string>('Todas');
+  const latestCommodities = useMemo(() => getLatestPricesPerMarket(data), [data]);
+  
+  
 
   // Consumo direto do endpoint da API .NET
   useEffect(() => {
@@ -68,6 +87,7 @@ export const CommoditiesPage: React.FC = () => {
     ? data 
     : data.filter(item => item.commodity.toLowerCase() === selectedCommodity.toLowerCase());
 
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[300px]">
@@ -113,7 +133,7 @@ export const CommoditiesPage: React.FC = () => {
 
       {/* Cards de Destaque */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredData.map((item) => {
+        {latestCommodities.map((item) => {
           const isPositive = (item.dailyVariationPercent ?? 0) >= 0;
 
           return (
