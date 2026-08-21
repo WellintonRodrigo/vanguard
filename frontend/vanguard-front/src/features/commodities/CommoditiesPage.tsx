@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {apiClient} from '../../shared/api/apiClient';
+import { CommodityKPIs } from './CommodityKPIs';
  
 
 // Contrato compativel com o DTO do backend .NET
@@ -39,7 +40,7 @@ export const CommoditiesPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedCommodity, setSelectedCommodity] = useState<string>('Todas');
   const latestCommodities = useMemo(() => getLatestPricesPerMarket(data), [data]);
-  
+
   
 
   // Consumo direto do endpoint da API .NET
@@ -113,6 +114,7 @@ export const CommoditiesPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Cotações de Commodities</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">Acompanhamento em tempo real via Vanguard API</p>
         </div>
+        <CommodityKPIs data={data} />
 
         <div className="flex gap-2">
           {['Todas', 'Soja', 'Milho'].map((item) => (
