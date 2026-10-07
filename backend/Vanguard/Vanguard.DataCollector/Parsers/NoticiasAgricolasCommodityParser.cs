@@ -31,9 +31,9 @@ namespace Vanguard.DataCollector.Parsers
                 var title = TextHelper.Clean(
                     cotacao.SelectSingleNode(".//h2/a")?.InnerText ?? string.Empty);
                
-                var commodity = CommodityNormalizer.Normalizers(title);
+                var commodity = source.Commodity;
 
-                var markert = MarketNormalizer.Normalize(title, commodity);
+                var market = MarketNormalizer.Normalize(title, commodity);
 
                 if (string.IsNullOrWhiteSpace(title))
                     continue;
@@ -81,7 +81,7 @@ namespace Vanguard.DataCollector.Parsers
                 {
                     Source = source.SourceKey,
                     Commodity = commodity,
-                    Market = markert,
+                    Market = market,
                     Unit = source.Unit,
                     PriceBrl = priceBrl,
                     PriceUsd = null,
