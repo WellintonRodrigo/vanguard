@@ -13,17 +13,16 @@ namespace Vanguard.Application.Features.Commodities.UseCases
         }
 
         public async Task<IReadOnlyCollection<CommodityPrice>> ExecuteAsync(
-        string commodity,
+        string? commodity=null,
         int days = 30,
         CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrWhiteSpace(commodity))
-                return [];
-
-            if(days <= 0)
+                if(days <= 0)
                 days = 30;
 
-            return await _repositor.GetHistoryAsync(commodity, days, cancellationToken);
+            var targetCommodity = string.IsNullOrWhiteSpace(commodity) ? null : commodity.Trim();
+
+            return await _repositor.GetHistoryAsync(targetCommodity, days, cancellationToken);
         }
     }
 }

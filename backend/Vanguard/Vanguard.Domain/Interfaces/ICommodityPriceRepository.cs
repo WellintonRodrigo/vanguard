@@ -33,7 +33,7 @@ namespace Vanguard.Domain.Interfaces
             CancellationToken cancellationToken = default);
 
         Task<IReadOnlyCollection<CommodityPrice>> GetHistoryAsync(
-            string commodity,
+            string? commodity,
             int days,
             CancellationToken cancellationToken = default);
 

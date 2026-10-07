@@ -64,14 +64,23 @@ namespace Vanguard.Infrastructure.Repositories
         }
 
         public async Task<IReadOnlyCollection<CommodityPrice>> GetHistoryAsync(
-            string commodity, int days, CancellationToken cancellationToken = default)
+            string? commodity, int days, CancellationToken cancellationToken = default)
         {
             var fromDate = DateTime.UtcNow.Date.AddDays(-days);
 
-            var filter = Builders<CommodityPrice>.Filter.And(
-                Builders<CommodityPrice>.Filter.Eq(x => x.Commodity, commodity),
-                Builders<CommodityPrice>.Filter.Gte(x => x.ReferenceDate , fromDate)
-                );
+            var filters = new List<FilterDefinition<CommodityPrice>>
+{
+    Builders<CommodityPrice>.Filter.Gte(x => x.ReferenceDate, fromDate)
+};
+
+            // 2. Se a commodity for informada, adiciona o filtro do nome
+            if (!string.IsNullOrWhiteSpace(commodity))
+            {
+                filters.Add(Builders<CommodityPrice>.Filter.Eq(x => x.Commodity, commodity));
+            }
+
+            // 3. Combina todos os filtros ativos com o .And()
+            var filter = Builders<CommodityPrice>.Filter.And(filters);
 
             return await _collection
                  .Find(filter)

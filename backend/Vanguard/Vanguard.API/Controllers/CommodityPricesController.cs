@@ -72,7 +72,7 @@ namespace Vanguard.API.Controllers
         }
 
         [HttpGet("history")]
-        public async Task<IActionResult> GetHistory([FromQuery] string commodity,
+        public async Task<IActionResult> GetHistory([FromQuery] string? commodity = null,
             [FromQuery] int days = 30,
             CancellationToken cancellationToken = default)
         {
