@@ -7,12 +7,12 @@ namespace Vanguard.Domain.Interfaces
 {
     public interface IWeatherRepository
     {
-        Task CreateAsync(WeatherLogcs weatherLog);
+        Task CreateAsync(WeatherLog weatherLog);
 
-        Task<List<WeatherLogcs>> GetByLocationAsync(
+        Task<List<WeatherLog>> GetByLocationAsync(
             string location);
 
-        Task<List<WeatherLogcs>> GetByDateRangeAsync(
+        Task<List<WeatherLog>> GetByDateRangeAsync(
             DateTime startDate,
             DateTime endDate);
     }

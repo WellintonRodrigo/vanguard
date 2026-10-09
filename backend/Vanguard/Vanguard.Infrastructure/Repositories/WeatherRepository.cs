@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Vanguard.Domain.Entities;
@@ -7,20 +8,33 @@ using Vanguard.Domain.Interfaces;
 namespace Vanguard.Infrastructure.Repositories
 {
     public class WeatherRepository : IWeatherRepository
+       
     {
-        Task IWeatherRepository.CreateAsync(WeatherLogcs weatherLog)
+        public readonly IMongoCollection<WeatherLog> _weatherLogsCollection;
+
+        public WeatherRepository(IMongoDatabase database)
         {
-            throw new NotImplementedException();
+            _weatherLogsCollection = database.GetCollection<WeatherLog>("WeatherLogs");
+        }
+        async Task IWeatherRepository.CreateAsync(WeatherLog weatherLog)
+        {
+            await _weatherLogsCollection.InsertOneAsync(weatherLog);
         }
 
-        Task<List<WeatherLogcs>> IWeatherRepository.GetByDateRangeAsync(DateTime startDate, DateTime endDate)
+       async Task<List<WeatherLog>> IWeatherRepository.GetByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            return await _weatherLogsCollection
+            .Find(x => x.Date >= startDate && x.Date <= endDate)
+            .SortByDescending(x => x.Date)
+            .ToListAsync();
         }
 
-        Task<List<WeatherLogcs>> IWeatherRepository.GetByLocationAsync(string location)
+        async Task<List<WeatherLog>> IWeatherRepository.GetByLocationAsync(string location)
         {
-            throw new NotImplementedException();
+            return await _weatherLogsCollection
+                .Find(log => log.Location == location)
+                .SortByDescending(x => x.Date)
+                .ToListAsync();
         }
     }
 }
