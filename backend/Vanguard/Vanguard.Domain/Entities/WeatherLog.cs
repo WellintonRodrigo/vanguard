@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Vanguard.Domain.Entities
 {
-    public class WeatherLogcs
+    public class WeatherLog
     {
         public Guid Id { get; set; }
 
