@@ -169,7 +169,7 @@ namespace Vanguard.Application.Features.Predictions.Services
             if (rain >= 10)
             {
                 return new ClimateImpactResult(
-                    InsightKey: "moderateRain",
+                    InsightKey: "forecastModerateRain",
                     Probability: 65,
                     EstimatedVariationPercent: 5,
                    Trend: Trend.up);
@@ -178,14 +178,14 @@ namespace Vanguard.Application.Features.Predictions.Services
             if (rain < 5)
             {
                 return new ClimateImpactResult(
-                    InsightKey: "lowRain",
+                    InsightKey: "forecastLowRain",
                     Probability: 30,
                     EstimatedVariationPercent: 1,
                    Trend: Trend.stable);
             }
 
             return new ClimateImpactResult(
-                InsightKey: "stable",
+                InsightKey: "forecastStable",
                 Probability: 35,
                 EstimatedVariationPercent: 0,
                Trend: Trend.stable);
