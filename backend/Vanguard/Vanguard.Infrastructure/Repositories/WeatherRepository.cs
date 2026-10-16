@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Vanguard.Domain.Entities;
 using Vanguard.Domain.Interfaces;
+using Vanguard.Infrastructure.Persistence.Context;
 
 namespace Vanguard.Infrastructure.Repositories
 {
@@ -12,10 +13,10 @@ namespace Vanguard.Infrastructure.Repositories
     {
         public readonly IMongoCollection<WeatherLog> _weatherLogsCollection;
 
-        public WeatherRepository(IMongoDatabase database)
+        public WeatherRepository(MongoDbContext context)
         {
-            _weatherLogsCollection = database.GetCollection<WeatherLog>("WeatherLogs");
-        }
+            _weatherLogsCollection = context.Database.GetCollection<WeatherLog>("WeatherLogs");
+            }
         async Task IWeatherRepository.CreateAsync(WeatherLog weatherLog)
         {
             await _weatherLogsCollection.InsertOneAsync(weatherLog);

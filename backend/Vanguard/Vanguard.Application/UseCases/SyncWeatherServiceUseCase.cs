@@ -4,7 +4,7 @@ using Vanguard.Domain.Interfaces;
 
 namespace Vanguard.Application.UseCases
 {
-    internal class SyncWeatherServiceUseCase
+    public class SyncWeatherServiceUseCase
     {
         private readonly IWeatherProvider _weatherProvider;
         private readonly IWeatherRepository _weatherRepository;
@@ -20,7 +20,7 @@ namespace Vanguard.Application.UseCases
             var weatherDto = await _weatherProvider.GetWeatherAsync(latitude, longitude, location);
             var weatherLog = new Domain.Entities.WeatherLog
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString(),
                 Location = location,
                 Date = DateTime.UtcNow,
                 PrecipitationMm = weatherDto.Rain,

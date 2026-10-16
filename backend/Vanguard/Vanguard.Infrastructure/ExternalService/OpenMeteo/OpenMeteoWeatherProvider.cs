@@ -22,7 +22,7 @@ namespace Vanguard.Infrastructure.ExternalService.OpenMeteo
         public async Task<WeatherDto> GetWeatherAsync(double latitude, double longitude, string location)
         {
             var url =
-            $"forecast?latitude={latitude.ToString(CultureInfo.InvariantCulture)}" +
+            $"https://api.open-meteo.com/v1/forecast?latitude={latitude.ToString(CultureInfo.InvariantCulture)}" +
             $"&longitude={longitude.ToString(CultureInfo.InvariantCulture)}" +
             $"&current=temperature_2m,rain";
 
@@ -51,7 +51,7 @@ namespace Vanguard.Infrastructure.ExternalService.OpenMeteo
         public async Task<WeatherForecastDto> GetWeatherForecastAsync(double latitude, double longitude, string location, int forecastDays = 7)
         {
             var url =
-        $"forecast?latitude={latitude.ToString(CultureInfo.InvariantCulture)}" +
+        $"https://api.open-meteo.com/v1/forecast?latitude={latitude.ToString(CultureInfo.InvariantCulture)}" +
         $"&longitude={longitude.ToString(CultureInfo.InvariantCulture)}" +
         $"&daily=precipitation_sum,temperature_2m_max,temperature_2m_min" +
         $"&forecast_days={forecastDays}" +

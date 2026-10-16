@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Vanguard.Application.UseCases;
 using Vanguard.Domain.Interfaces;
 
 namespace Vanguard.API.Controllers;
@@ -12,6 +13,17 @@ public class WeatherController : ControllerBase
     public WeatherController(IWeatherRepository weatherRepository)
     {
         _weatherRepository = weatherRepository;
+    }
+
+    [HttpPost("sync")]
+    public async Task<IActionResult> SyncWeather(
+    [FromQuery] string location,
+    [FromQuery] double latitude,
+    [FromQuery] double longitude,
+    [FromServices] SyncWeatherServiceUseCase syncUseCase)
+    {
+        await syncUseCase.ExecuteAsync(location, latitude, longitude);
+        return Ok(new { message = $"Clima sincronizado com sucesso para {location}" });
     }
 
     [HttpGet("history")]

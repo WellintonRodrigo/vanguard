@@ -29,6 +29,7 @@ builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection(MongoDbSettings.SectionName));
 builder.Services.AddSingleton<MongoDbContext>();
 
+
 builder.Services.AddHttpClient<ICommodityCollector, NoticiasAgricolasCommodityCollector>();
 builder.Services.AddHttpClient<ICollectorHealthChecker, NoticiasAgricolasHealthChecker>();
 builder.Services.AddHttpClient<IWeatherProvider, OpenMeteoWeatherProvider>(
@@ -57,6 +58,9 @@ builder.Services.AddScoped<GetLatestCommodityPriceUseCase>();
 builder.Services.AddScoped<GetCommodityHistoryUseCase>();
 builder.Services.AddScoped<GetCommoditiesUseCase>();
 builder.Services.AddScoped<GetCommodityPricesSummaryUseCase>();
+builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
+builder.Services.AddScoped<IWeatherProvider, OpenMeteoWeatherProvider>();
+builder.Services.AddScoped<SyncWeatherServiceUseCase>();
 
 builder.Services.AddCors(options =>
 {

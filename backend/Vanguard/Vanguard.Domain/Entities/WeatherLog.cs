@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Vanguard.Domain.Entities
+﻿namespace Vanguard.Domain.Entities
 {
     public class WeatherLog
     {
-        public Guid Id { get; set; }
+        
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string Location { get; set; } = string.Empty;
 
