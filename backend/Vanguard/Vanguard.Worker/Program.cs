@@ -1,5 +1,6 @@
 ﻿using Vanguard.Application.Features.Commodities.Services;
 using Vanguard.Application.Features.Insights;
+using Vanguard.Application.Interfaces;
 using Vanguard.Application.UseCases;
 using Vanguard.DataCollector.Collectors;
 using Vanguard.DataCollector.Collectors.Interfaces;
@@ -7,6 +8,7 @@ using Vanguard.DataCollector.Health.HealthCheckers;
 using Vanguard.DataCollector.Health.Interfaces;
 using Vanguard.DataCollector.Parsers;
 using Vanguard.Domain.Interfaces;
+using Vanguard.Infrastructure.ExternalService.OpenMeteo;
 using Vanguard.Infrastructure.Persistence.Configurations;
 using Vanguard.Infrastructure.Persistence.Context;
 using Vanguard.Infrastructure.Repositories;
@@ -40,6 +42,9 @@ builder.Services.AddHttpClient<ICollectorHealthChecker, NoticiasAgricolasHealthC
 builder.Services.AddScoped<IWorkerExecutionLogRepository, WorkerExecutionLogRepository>();
 builder.Services.AddScoped<DataFreshnessService>();
 builder.Services.AddScoped<DataFreshnessInsightTemplateService>();
+builder.Services.AddHttpClient<IWeatherProvider, OpenMeteoWeatherProvider>();
+builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
+builder.Services.AddScoped<SyncWeatherServiceUseCase>();
 
 
 builder.Services.AddHostedService<DataCollectionWorker>();
