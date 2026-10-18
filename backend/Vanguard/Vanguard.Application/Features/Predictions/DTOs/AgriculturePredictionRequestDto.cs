@@ -6,7 +6,7 @@ namespace Vanguard.Application.Features.Predictions.DTOs
 {
     public class AgriculturePredictionRequestDto
     {
-         public string Product { get; set; } = string.Empty;
+    public string Product { get; set; } = string.Empty;
 
     public string Location { get; set; } = string.Empty;
 

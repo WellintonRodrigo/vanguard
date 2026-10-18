@@ -12,27 +12,35 @@ namespace Vanguard.Application.Features.Predictions.Services
         private readonly IWeatherProvider _weatherProvider;
         private readonly InsightTemplateService _insightTemplateService;
         private readonly IPredictionRepository _predictionRepository;
+        private readonly ICommodityPriceRepository _commodityPriceRepository;
         public PredictionEngineService(
             IWeatherProvider weatherProvider,
             InsightTemplateService insightTemplateService,
-            IPredictionRepository predictionRepository
+            IPredictionRepository predictionRepository,
+            ICommodityPriceRepository commodityPriceRepository
             )
         {
             _weatherProvider = weatherProvider; 
             _insightTemplateService = insightTemplateService;
             _predictionRepository = predictionRepository;
+            _commodityPriceRepository = commodityPriceRepository;
         }
 
         public async Task<AgriculturePredictionResponseDto> AnalyzeAgricultureAsync(
             AgriculturePredictionRequestDto requestDto)
         {
-            //BUSCAR CLIMA
+            //BUSCAR CLIMA ATUAL
 
             var weather = await _weatherProvider.GetWeatherAsync(
                 latitude: requestDto.Latitude,
                 longitude: requestDto.Longitude,
                 location: requestDto.Location);
-           
+
+            //BUSCAR COTAÇÃO DE COMMODITY
+
+            var latestPrice = await _commodityPriceRepository.GetLatestByCommodityAsync(
+                requestDto.Product);
+
             //CALCULAR HEURÍSTICA
             var result = CalculateClimateImpact(weather.Rain);
            
@@ -59,9 +67,9 @@ namespace Vanguard.Application.Features.Predictions.Services
             {
                 Product = requestDto.Product,
                 Location = requestDto.Location,
-                ImpactProbability = result.Probability,
+                ImpactProbability = (double)result.Probability,
                 Trend = result.Trend.ToString(),
-                EstimatedVariationPercent = result.EstimatedVariationPercent,
+                EstimatedVariationPercent = (double)result.EstimatedVariationPercent,
                 Insight = insight,
                 PredictionDate = DateTime.UtcNow
 
@@ -107,9 +115,9 @@ namespace Vanguard.Application.Features.Predictions.Services
             {
                 Product = requestDto.Product,
                 Location = requestDto.Location,
-                ImpactProbability = result.Probability,
+                ImpactProbability = (double)result.Probability,
                 Trend = result.Trend.ToString(),
-                EstimatedVariationPercent = result.EstimatedVariationPercent,
+                EstimatedVariationPercent = (double)result.EstimatedVariationPercent,
                 Insight = insight,
                 PredictionDate = DateTime.UtcNow
             };
