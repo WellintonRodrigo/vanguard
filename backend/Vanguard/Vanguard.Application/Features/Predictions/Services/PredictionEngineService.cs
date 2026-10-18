@@ -30,33 +30,32 @@ namespace Vanguard.Application.Features.Predictions.Services
             AgriculturePredictionRequestDto requestDto)
         {
             //BUSCAR CLIMA ATUAL
-
             var weather = await _weatherProvider.GetWeatherAsync(
                 latitude: requestDto.Latitude,
                 longitude: requestDto.Longitude,
                 location: requestDto.Location);
 
             //BUSCAR COTAÇÃO DE COMMODITY
-
             var latestPrice = await _commodityPriceRepository.GetLatestByCommodityAsync(
                 requestDto.Product);
+            decimal priceVariation = latestPrice?.DailyVariationPercent ?? 0m;
 
             //CALCULAR HEURÍSTICA
-            var result = CalculateClimateImpact(weather.Rain);
+            var result = CalculateClimateImpact(weather.Rain, priceVariation);
            
             //GERAR INSIGHTS
             var insight = _insightTemplateService.Generate(
-            result.InsightKey,
-            requestDto.Product,
-            requestDto.Location);
+                result.InsightKey,
+                requestDto.Product,
+                requestDto.Location);
            
             //CRIAR PREDICTION
             var prediction = new Prediction
             {
                 TargetProduct = requestDto.Product,
-                ImpactProbability = result.Probability,
+                ImpactProbability = (decimal)result.Probability,
                 Trend = result.Trend,
-                EstimatedVariationPercent = result.EstimatedVariationPercent,
+                EstimatedVariationPercent = (decimal)result.EstimatedVariationPercent,
                 Insight = insight,
                 PredictionDate = DateTime.UtcNow,
             };
@@ -72,7 +71,6 @@ namespace Vanguard.Application.Features.Predictions.Services
                 EstimatedVariationPercent = (double)result.EstimatedVariationPercent,
                 Insight = insight,
                 PredictionDate = DateTime.UtcNow
-
             };
         }
 
@@ -87,11 +85,11 @@ namespace Vanguard.Application.Features.Predictions.Services
             var totalRain = forecast.DailyForecasts
                 .Sum(day => day.PrecipitationSum);
 
-            var criticalRainDays =forecast.DailyForecasts
+            var criticalRainDays = forecast.DailyForecasts
                 .Count(day => day.PrecipitationSum >= 20);
 
             var result = CalculateForecastImpact(
-                totalRain,
+                (double)totalRain,
                 criticalRainDays);
 
             var insight = _insightTemplateService.Generate(
@@ -102,9 +100,9 @@ namespace Vanguard.Application.Features.Predictions.Services
             var prediction = new Prediction
             {
                 TargetProduct = requestDto.Product,
-                ImpactProbability = result.Probability,
+                ImpactProbability = (decimal)result.Probability,
                 Trend = result.Trend,
-                EstimatedVariationPercent = result.EstimatedVariationPercent,
+                EstimatedVariationPercent = (decimal)result.EstimatedVariationPercent,
                 Insight = insight,
                 PredictionDate = DateTime.UtcNow,
             };
@@ -121,89 +119,82 @@ namespace Vanguard.Application.Features.Predictions.Services
                 Insight = insight,
                 PredictionDate = DateTime.UtcNow
             };
-                
-
         }
 
         private static ClimateImpactResult CalculateForecastImpact(
-            decimal totalRain,
-            int criticalRainDays)
+            double rainMm,
+            int criticalRainDays,
+            double priceVariation = 0.0)
         {
-            if ((totalRain >= 60 || criticalRainDays >= 2))
+            double variation = Math.Abs(priceVariation);
+
+            if (rainMm >= 60.0 || criticalRainDays >= 2)
             {
-                return new ClimateImpactResult(
-                    InsightKey: "heavyRainForecast",
-                    Probability:88,
-                    EstimatedVariationPercent: 10,
-                    Trend: Trend.up);
+                return new ClimateImpactResult("forecastHeavyRain", 88.0, 10.0, Trend.up);
             }
 
-            if(totalRain >= 10)
+            if (rainMm < 5.0)
             {
-                return new ClimateImpactResult(
-                    InsightKey: "frecastModerateRain",
-                    Probability: 70,
-                    EstimatedVariationPercent: 6,
-                    Trend: Trend.up);
+                return new ClimateImpactResult("droughtRisk", 70.0, 5.0, Trend.up);
             }
 
-            if(totalRain < 10)
+            if (rainMm >= 10.0)
             {
-                return new ClimateImpactResult(
-                    InsightKey: "forecastLowRain",
-                    Probability: 32,
-                    EstimatedVariationPercent: 1,
-                    Trend: Trend.stable);
+                return new ClimateImpactResult("forecastModerateRain", 60.0, 4.0, Trend.up);
             }
 
-            return new ClimateImpactResult(
-                InsightKey: "forecastStable",
-                Probability: 40,
-                EstimatedVariationPercent: 2,
-                Trend: Trend.stable);
+            return new ClimateImpactResult("forecastStable", 35.0, 0.0, Trend.stable);
         }
 
-        private static ClimateImpactResult CalculateClimateImpact(decimal rain)
+        private static ClimateImpactResult CalculateClimateImpact(decimal rain, decimal priceVariation = 0m)
         {
-            if (rain >= 30)
+            double rainMm = (double)rain;
+            double variation = Math.Abs((double)priceVariation);
+
+            // Cenário 1: Chuva Extrema + Volatilidade no Preço
+            if (rainMm >= 30.0 && variation >= 2.0)
             {
-                return new ClimateImpactResult(
-                    InsightKey: "heavyRain",
-                    Probability: 85,
-                    EstimatedVariationPercent: 8,
-                   Trend: Trend.up);
+                return new ClimateImpactResult("extremeCombinedRisk", 90.0, 10.0, Trend.up);
             }
 
-            if (rain >= 10)
+            // Seca severa
+            if (rainMm < 2.0)
             {
-                return new ClimateImpactResult(
-                    InsightKey: "forecastModerateRain",
-                    Probability: 65,
-                    EstimatedVariationPercent: 5,
-                   Trend: Trend.up);
+                return new ClimateImpactResult("droughtRisk", 75.0, 6.0, Trend.up);
             }
 
-            if (rain < 5)
+            // Volatilidade isolada no mercado
+            if (variation >= 3.0)
             {
-                return new ClimateImpactResult(
-                    InsightKey: "forecastLowRain",
-                    Probability: 30,
-                    EstimatedVariationPercent: 1,
-                   Trend: Trend.stable);
+                return new ClimateImpactResult("marketVolatility", 65.0, 5.0, Trend.up);
             }
 
-            return new ClimateImpactResult(
-                InsightKey: "forecastStable",
-                Probability: 35,
-                EstimatedVariationPercent: 0,
-               Trend: Trend.stable);
+            // Chuva moderada
+            if (rainMm >= 10.0)
+            {
+                return new ClimateImpactResult("forecastModerateRain", 50.0, 3.0, Trend.up);
+            }
+
+            // Chuva alta
+            if (rainMm >= 30.0)
+            {
+                return new ClimateImpactResult("heavyRain", 85.0, 8.0, Trend.up);
+            }
+
+            // Baixa chuva
+            if (rainMm < 5.0)
+            {
+                return new ClimateImpactResult("forecastLowRain", 30.0, 1.0, Trend.stable);
+            }
+
+            return new ClimateImpactResult("forecastStable", 35.0, 0.0, Trend.stable);
         }
 
-        private sealed record ClimateImpactResult(
+        // Tornado público para evitar erro de acessibilidade (CS0122) se usado fora desta classe
+        public sealed record ClimateImpactResult(
             string InsightKey,
-            decimal Probability,
-            decimal EstimatedVariationPercent,
+            double Probability,
+            double EstimatedVariationPercent,
             Trend Trend);
-    
     }
 }

@@ -31,5 +31,17 @@
   "forecastStable": [
     "A previsão climática dos próximos dias indica cenário estável para {product} em {location}.",
     "Sem sinais climáticos relevantes no forecast, o impacto estimado sobre {product} permanece controlado."
+  ],
+  "droughtRisk": [
+    "Aviso de estiagem em {location}: baixo volume pluviométrico combinando com monitoramento sobre a safra de {product}.",
+    "Estiagem prolongada detectada em {location}. A baixa umidade acumulada pressiona os custos e oferta de {product}."
+  ],
+  "marketVolatility": [
+    "Instabilidade no mercado financeiro: variação atípica na cotação de {product} na praça de {location} sob atenção climática.",
+    "Oscilação relevante no preço de {product} em {location}. O cenário exige cautela na comercialização."
+  ],
+  "extremeCombinedRisk": [
+    "Alerta crítico em {location}: chuva extrema aliada à alta volatilidade no preço de {product} eleva o risco logístico e financeiro.",
+    "Cenário de alto risco em {location}: impacto severo de clima e flutuação de mercado sobre a oferta de {product}."
   ]
 }
