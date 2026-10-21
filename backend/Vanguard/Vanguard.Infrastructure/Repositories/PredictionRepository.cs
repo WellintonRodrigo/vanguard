@@ -47,5 +47,12 @@ namespace Vanguard.Infrastructure.Repositories
             await _collection.DeleteOneAsync(
                 prediction => prediction.Id == id);
         }
+
+        public Task<List<Prediction>> GetByProductAsync(string productName)
+        {
+            return _collection
+                .Find(prediction => prediction.TargetProduct == productName)
+                .ToListAsync();
+        }
     }
 }

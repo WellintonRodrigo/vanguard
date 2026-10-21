@@ -12,5 +12,6 @@ namespace Vanguard.Domain.Interfaces
         Task<List<Prediction>> GetAllAsync();
         Task UpdateAsync(Prediction prediction);
         Task DeleteAsync(string id);
+        Task<List<Prediction>> GetByProductAsync(string productName);
     }
 }

@@ -1,7 +1,4 @@
 ﻿using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Vanguard.Domain.Entities;
 using Vanguard.Domain.Interfaces;
 using Vanguard.Infrastructure.Persistence.Context;

@@ -3,6 +3,8 @@ using Vanguard.Application.Features.Insights;
 using Vanguard.Application.Features.Predictions.DTOs;
 using Vanguard.Application.Features.Predictions.Services;
 using Vanguard.Application.Interfaces;
+using Vanguard.Domain.Interfaces;
+using Vanguard.Infrastructure.Repositories;
 namespace Vanguard.API.Controllers
 {
     [ApiController]
@@ -13,60 +15,26 @@ namespace Vanguard.API.Controllers
         private readonly IWeatherProvider _weatherProvider;
         private readonly InsightTemplateService _insightTemplateService;
         private readonly PredictionEngineService _predictionEngineService;
+        private readonly IPredictionRepository _predictionRepository;
         public PredictionsController(
             PredictionService predictionService, 
             IWeatherProvider weatherProvider,
             InsightTemplateService insightTemplateService,
-            PredictionEngineService predictionEngineService
+            PredictionEngineService predictionEngineService,
+            IPredictionRepository predictionRepository
             )
         {
             _predictionService = predictionService;
             _weatherProvider = weatherProvider;
             _insightTemplateService = insightTemplateService;
             _predictionEngineService = predictionEngineService;
+            _predictionRepository = predictionRepository;
         }
 
         [HttpPost("analize")]
         public IActionResult Analize([FromBody] PredictionRequestDto request)
         {
            var result = _predictionService.Analyze(request.Question);
-            return Ok(result);
-        }
-        [HttpPost("teste")]
-        public async Task<IActionResult> teste() // controller de teste para verificar se a persistência está funcionando
-        {
-            await _predictionService.SalvarTesteAsync();
-            return Ok("Teste salvo com sucesso");
-        }
-        [HttpGet("weather-test")]
-        public async Task<IActionResult> WeatherTest() // controller de teste para verificar se a integração com o Open-Meteo está funcionando
-        {
-            var result = await _weatherProvider.GetWeatherAsync(
-                latitude: -26.3044,
-                longitude: -48.8487,
-                location: "Joinville - SC"
-                );
-            return Ok(result);
-        }
-        [HttpGet("insight-test")]// controller de teste para verificar se a geração de insights está funcionando
-        public IActionResult InsightTest()
-        {
-            var insight = _insightTemplateService.Generate(
-                key: "heavyRain",
-                product: "Tomate",
-                location: "Joinville - SC");
-
-            return Ok(new { insight });
-        }
-
-        [HttpGet("forecast-test")] // controller de teste para verificar se a previsão de 7 dias agrícola está funcionando.
-        public async Task<IActionResult> ForecastTest()
-        {
-            var result = await _weatherProvider.GetWeatherForecastAsync(
-                latitude: -26.3044,
-                longitude: -48.8487,
-                location: "Joinville - SC");
-                    
             return Ok(result);
         }
 
@@ -80,7 +48,7 @@ namespace Vanguard.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("agriculture/forecast")]
+        [HttpPost("agriculture/forecast")] // Gera uma análise baseada no forecast de 7 dias e salva no banco.
 
         public async Task<IActionResult> AgricultureForecastPrediction(
             [FromBody] AgriculturePredictionRequestDto requestDto)
@@ -89,6 +57,20 @@ namespace Vanguard.API.Controllers
                 .AnalyzaAgricultureForecastAsync(requestDto);
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()//Lista o histórico de todas as predições salvas no MongoDB
+        {
+            var predictions = await _predictionRepository.GetAllAsync();
+            return Ok(predictions);
+        }
+
+        [HttpGet("product/{productName}")]
+        public async Task<IActionResult> GetByProduct(string productName)
+        {
+            var predictions = await _predictionRepository.GetByProductAsync(productName);
+            return Ok(predictions);
         }
 
     }

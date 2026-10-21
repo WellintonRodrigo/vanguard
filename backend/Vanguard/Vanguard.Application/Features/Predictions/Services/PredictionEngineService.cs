@@ -190,7 +190,7 @@ namespace Vanguard.Application.Features.Predictions.Services
             return new ClimateImpactResult("forecastStable", 35.0, 0.0, Trend.stable);
         }
 
-        // Tornado público para evitar erro de acessibilidade (CS0122) se usado fora desta classe
+        // Tornado público para evitar erro de acessibilidade se usado fora desta classe
         public sealed record ClimateImpactResult(
             string InsightKey,
             double Probability,
