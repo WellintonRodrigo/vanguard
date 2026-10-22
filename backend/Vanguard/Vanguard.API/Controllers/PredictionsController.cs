@@ -4,7 +4,6 @@ using Vanguard.Application.Features.Predictions.DTOs;
 using Vanguard.Application.Features.Predictions.Services;
 using Vanguard.Application.Interfaces;
 using Vanguard.Domain.Interfaces;
-using Vanguard.Infrastructure.Repositories;
 namespace Vanguard.API.Controllers
 {
     [ApiController]
