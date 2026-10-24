@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { apiClient } from '../../shared/api/apiClient';
 import { CommodityKPIs } from './CommodityKPIs';
+import {CommodityHistoryTable} from './CommodityHistoryTable';
 import { formatCurrency, formatDate } from '../../shared/utils/formatters';
 export interface CommodityPrice {
   id: string;
@@ -173,59 +174,11 @@ export const CommoditiesPage: React.FC = () => {
         })}
       </div>
 
-      {/* Tabela de Histórico */}
-      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-            Histórico de Coletas
-          </h2>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-500 dark:text-gray-300">
-            <thead className="bg-gray-50 dark:bg-gray-800 text-xs text-gray-500 uppercase tracking-wider">
-              <tr>
-                <th className="px-6 py-3">Data Ref.</th>
-                <th className="px-6 py-3">Commodity</th>
-                <th className="px-6 py-3">Mercado</th>
-                <th className="px-6 py-3">Preço (BRL)</th>
-                <th className="px-6 py-3">Variação Diária</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
-              {filteredData.length > 0 ? (
-                filteredData.map((row) => (
-                  <tr
-                    key={row.id}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-                  >
-                    <td className="px-6 py-4 font-medium whitespace-nowrap">
-                      {formatDate(row.referenceDate)}
-                    </td>
-                    <td className="px-6 py-4">{row.commodity}</td>
-                    <td className="px-6 py-4">{row.market}</td>
-                    <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                      {formatCurrency(row.priceBrl)}
-                    </td>
-                    <td
-                      className={`px-6 py-4 font-medium ${
-                        (row.dailyVariationPercent ?? 0) >= 0 ? 'text-emerald-500' : 'text-rose-500'
-                      }`}
-                    >
-                      {row.dailyVariationPercent}%
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                    Nenhuma cotação encontrada.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      <CommodityHistoryTable 
+      data={filteredData}
+      formatCurrency={formatCurrency}
+      formatDate={formatDate}
+      />
+    </div>  
   );
 };
