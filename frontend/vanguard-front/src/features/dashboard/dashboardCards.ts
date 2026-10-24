@@ -4,7 +4,7 @@ import type {
 } from "../health/collectorHealthService";
 import { formatDateTime } from "../../shared/utils/dateUtils";
 import type { CommoditySummaryResponse }from "../commodities/commodityService";
-import type { WeatherResponse } from "../weather/weatherService";
+import type { WeatherLog } from "../weather/weatherService";
 
 type CardStatus = "success" | "warning" | "error" | "info";
 
@@ -59,7 +59,7 @@ export function buildCommoditiesCard(
 }
 
 export function buildWeatherCard(
-  weather?: WeatherResponse | null
+  weather?: WeatherLog | null
 ) {
   const temp = weather?.temperatureMax ?? weather?.temperature ?? 0;
   // Pega a chuva em mm
