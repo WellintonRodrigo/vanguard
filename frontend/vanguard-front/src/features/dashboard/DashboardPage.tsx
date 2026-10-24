@@ -24,7 +24,7 @@ import {
 import {
   getCommoditySummary, type CommoditySummaryResponse,
 } from "../commodities/commodityService";
-import {getWeatherPrediction, type WeatherPredictionResponse,
+import {getWeatherPrediction, type WeatherResponse,
 } from "../weather/weatherService";
 
 export function DashboardPage() {
@@ -35,7 +35,7 @@ const [collectorHistory, setCollectorHistory] = useState<CollectorHealthLogRespo
 const [commoditySummary, setCommoditySummary] = 
 useState<CommoditySummaryResponse | null>(null);
 const [weatherPrediction, setWeatherPrediction] =
-  useState<WeatherPredictionResponse | null>(null);
+  useState<WeatherResponse | null>(null);
 
 useEffect(() => {
   async function loadCollectorSummary() {

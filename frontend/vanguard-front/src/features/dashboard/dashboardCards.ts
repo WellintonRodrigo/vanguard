@@ -4,7 +4,7 @@ import type {
 } from "../health/collectorHealthService";
 import { formatDateTime } from "../../shared/utils/dateUtils";
 import type { CommoditySummaryResponse }from "../commodities/commodityService";
-import type { WeatherPredictionResponse } from "../weather/weatherService";
+import type { WeatherResponse } from "../weather/weatherService";
 
 type CardStatus = "success" | "warning" | "error" | "info";
 
@@ -59,12 +59,16 @@ export function buildCommoditiesCard(
 }
 
 export function buildWeatherCard(
-  weather?: WeatherPredictionResponse | null
+  weather?: WeatherResponse | null
 ) {
+  const temp = weather?.temperatureMax ?? weather?.temperature ?? 0;
+  // Pega a chuva em mm
+  const rain = weather?.precipitationMm ?? weather?.rain ?? 0;
+  const location = weather?.location ?? "Joinville - SC";
   return {
-    value: weather ? `${weather.temperature}°C` : "Indisponível",
+    value: weather ? `${temp}°C` : "Indisponível",
     description: weather
-      ? `${weather.location} • Chuva ${weather.rain}mm`
+      ? `${location} • Chuva ${rain}mm`
       : "Previsão climática indisponível",
     status: weather ? "info" : "error" as CardStatus,
   };
