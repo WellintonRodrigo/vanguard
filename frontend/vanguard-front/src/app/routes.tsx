@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "../shared/layouts/MainLayout";
 
 import { DashboardPage } from "../features/dashboard/DashboardPage";
-import { CommoditiesPage } from "../features/commodities/CommoditiesPage";
+import { CommoditiesPage } from "../features/commodities/Components/CommoditiesPage";
 import { WeatherPage } from "../features/weather/WeatherPage";
 import { FreshnessPage } from "../features/freshness/FreshnessPage";
 import { HealthPage } from "../features/health/HealthPage";

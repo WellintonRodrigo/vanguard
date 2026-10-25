@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { apiClient } from '../../shared/api/apiClient';
+import { apiClient } from '../../../shared/api/apiClient';
 import { CommodityKPIs } from './CommodityKPIs';
 import {CommodityHistoryTable} from './CommodityHistoryTable';
 import{ CommoditesCardsDest} from './CommoditesCardsDest';
-import { formatCurrency, formatDate } from '../../shared/utils/formatters';
+import { formatCurrency, formatDate } from '../../../shared/utils/formatters';
 export interface CommodityPrice {
   id: string;
   source: string;
