@@ -3,6 +3,7 @@ import { apiClient } from '../../../shared/api/apiClient';
 import { CommodityKPIs } from './CommodityKPIs';
 import {CommodityHistoryTable} from './CommodityHistoryTable';
 import{ CommoditesCardsDest} from './CommoditesCardsDest';
+import { PredictionHUD } from './PredictionHUD';
 import { formatCurrency, formatDate } from '../../../shared/utils/formatters';
 export interface CommodityPrice {
   id: string;
@@ -128,6 +129,11 @@ export const CommoditiesPage: React.FC = () => {
       </div>
 
       <CommodityKPIs data={filteredData} />
+
+      
+      <div className="p-6 space-y-6">
+      <PredictionHUD />
+      </div>
       
       <CommoditesCardsDest
       data={latestCommodities}
