@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type{ CommodityPrice } from './CommoditiesPage';
-import { DatabaseOutlined } from '@ant-design/icons';
+import {HistoryOutlined} from '@ant-design/icons';
 
 
 interface CommodityHistoryTableProps {
@@ -26,7 +26,9 @@ export const CommodityHistoryTable: React.FC<CommodityHistoryTableProps> = ({
         className="w-full p-4 bg-slate-900 hover:bg-slate-800/70 transition-colors flex items-center justify-between border-b border-slate-800/80 focus:outline-none focus:ring-1 focus:ring-emerald-500/40"
       >
         <div className="flex items-center gap-3">
-          <DatabaseOutlined />
+          <div className="p-2.5 rounded-lg bg-emerald-950/60 border border-emerald-800/40 text-emerald-400 text-lg flex items-center justify-center">
+            <HistoryOutlined />
+          </div>
           <div>
             <h2 className="text-base font-semibold text-slate-100">
               Histórico de Coletas
