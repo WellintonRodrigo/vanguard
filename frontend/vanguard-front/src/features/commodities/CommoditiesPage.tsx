@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { apiClient } from '../../shared/api/apiClient';
 import { CommodityKPIs } from './CommodityKPIs';
 import {CommodityHistoryTable} from './CommodityHistoryTable';
+import{ CommoditesCardsDest} from './CommoditesCardsDest';
 import { formatCurrency, formatDate } from '../../shared/utils/formatters';
 export interface CommodityPrice {
   id: string;
@@ -127,52 +128,13 @@ export const CommoditiesPage: React.FC = () => {
       </div>
 
       <CommodityKPIs data={filteredData} />
+      
+      <CommoditesCardsDest
+      data={latestCommodities}
+      formatCurrency={formatCurrency}
+      formatDate={formatDate}
+      />
 
-      {/* Cards de Destaque */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {latestCommodities.map((item) => {
-          const isPositive = (item.dailyVariationPercent ?? 0) >= 0;
-          return (
-            <div
-              key={item.id}
-              className="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <span className="text-xs font-semibold tracking-wider text-emerald-500 uppercase">
-                    {item.commodity}
-                  </span>
-                  <h3 className="text-base font-semibold text-gray-800 dark:text-gray-100">
-                    {item.market}
-                  </h3>
-                </div>
-                <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                    isPositive
-                      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                      : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
-                  }`}
-                >
-                  {isPositive ? '▲' : '▼'}
-                  {item.dailyVariationPercent}%
-                </span>
-              </div>
-              <div className="mt-4 flex items-baseline justify-between">
-                <div>
-                  <span className="text-3xl font-extrabold text-gray-900 dark:text-white">
-                    {formatCurrency(item.priceBrl)}
-                  </span>
-                  <span className="ml-1 text-xs text-gray-500">/ {item.unit}</span>
-                </div>
-              </div>
-              <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 flex justify-between text-xs text-gray-400">
-                <span>Fonte: {item.source}</span>
-                <span>Ref: {formatDate(item.referenceDate)}</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
 
       <CommodityHistoryTable 
       data={filteredData}
