@@ -8,6 +8,7 @@ import {
   AlertOutlined,
 } from '@ant-design/icons';
 import { apiClient } from '../../../shared/api/apiClient';
+import { formatTrend } from '../../../shared/utils/formatTrend';
 
 export interface AgriculturePredictionRequest {
   product: string;
@@ -65,6 +66,10 @@ export const PredictionHUD: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const trendInfo = prediction
+    ? formatTrend(prediction.trend)
+    : { label: '', className: '' };
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl transition-all duration-300 mb-6">
@@ -191,8 +196,8 @@ export const PredictionHUD: React.FC = () => {
                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block mb-1">
                   TENDÊNCIA DE MERCADO
                 </span>
-                <span className="text-2xl font-bold uppercase text-amber-400">
-                  {prediction.trend}
+                <span className={`text-2xl font-bold uppercase ${trendInfo.className}`}>
+                  {trendInfo.label}
                 </span>
               </div>
 
@@ -218,7 +223,7 @@ export const PredictionHUD: React.FC = () => {
             </div>
 
             <div className="text-right text-[10px] text-slate-500 font-mono">
-              TIMESTAMP DO CÁLCULO:{' '}
+              Análise gerada em:{' '}
               {new Date(prediction.predictionDate).toLocaleString('pt-BR')}
             </div>
           </div>
