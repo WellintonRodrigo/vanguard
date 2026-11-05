@@ -1,4 +1,6 @@
-﻿namespace Vanguard.Application.Features.Predictions.DTOs
+﻿using Vanguard.Application.Features.Weather.DTOs;
+
+namespace Vanguard.Application.Features.Predictions.DTOs
 {
     public class AgriculturePredictionResponseDto
     {
@@ -15,5 +17,8 @@
         public string Insight { get; set; } = string.Empty;
 
         public DateTime PredictionDate { get; set; }
+        public decimal TotalRainAccumulated { get;  set; }
+        public int CriticalDaysCount { get;  set; }
+        public List<DailyWeatherDto> DailyForecasts { get; set; } =new();
     }
 }

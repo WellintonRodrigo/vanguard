@@ -53,7 +53,7 @@ namespace Vanguard.API.Controllers
             [FromBody] AgriculturePredictionRequestDto requestDto)
         {
             var result = await _predictionEngineService
-                .AnalyzaAgricultureForecastAsync(requestDto);
+                .AnalyzeAgricultureForecastAsync(requestDto);
 
             return Ok(result);
         }

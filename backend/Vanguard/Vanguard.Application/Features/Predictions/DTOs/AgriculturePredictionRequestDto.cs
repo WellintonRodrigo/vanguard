@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Vanguard.Application.Features.Weather.DTOs;
 
 namespace Vanguard.Application.Features.Predictions.DTOs
 {
@@ -13,5 +14,6 @@ namespace Vanguard.Application.Features.Predictions.DTOs
     public double Latitude { get; set; }
 
     public double Longitude { get; set; }
+
     }
 }

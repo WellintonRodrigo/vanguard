@@ -1,5 +1,6 @@
 ﻿using Vanguard.Application.Features.Insights;
 using Vanguard.Application.Features.Predictions.DTOs;
+using Vanguard.Application.Features.Weather.DTOs;
 using Vanguard.Application.Interfaces;
 using Vanguard.Domain.Entities;
 using Vanguard.Domain.Enums;
@@ -74,7 +75,7 @@ namespace Vanguard.Application.Features.Predictions.Services
             };
         }
 
-        public async Task<AgriculturePredictionResponseDto> AnalyzaAgricultureForecastAsync(
+        public async Task<AgriculturePredictionResponseDto> AnalyzeAgricultureForecastAsync(
             AgriculturePredictionRequestDto requestDto)
         {
             var forecast = await _weatherProvider.GetWeatherForecastAsync(
@@ -107,6 +108,19 @@ namespace Vanguard.Application.Features.Predictions.Services
                 PredictionDate = DateTime.UtcNow,
             };
 
+           
+           var dailyList = forecast?.DailyForecasts != null
+     ? forecast.DailyForecasts.Select(d => new DailyWeatherDto
+     {
+         Date = d.Date,
+         PrecipitationSum = d.PrecipitationSum,
+         TemperatureMax = d.TemperatureMax,
+         TemperatureMin = d.TemperatureMin
+     }).ToList()
+     : new List<DailyWeatherDto>();
+
+
+
             await _predictionRepository.CreateAsync(prediction);
 
             return new AgriculturePredictionResponseDto
@@ -117,7 +131,13 @@ namespace Vanguard.Application.Features.Predictions.Services
                 Trend = result.Trend.ToString(),
                 EstimatedVariationPercent = (double)result.EstimatedVariationPercent,
                 Insight = insight,
-                PredictionDate = DateTime.UtcNow
+                PredictionDate = DateTime.UtcNow,
+
+                TotalRainAccumulated = Math.Round(totalRain, 1),
+                CriticalDaysCount = criticalRainDays,
+                DailyForecasts = dailyList
+                
+                
             };
         }
 

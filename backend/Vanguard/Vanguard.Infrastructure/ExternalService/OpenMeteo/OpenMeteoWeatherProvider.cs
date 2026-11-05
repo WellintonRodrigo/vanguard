@@ -50,41 +50,36 @@ namespace Vanguard.Infrastructure.ExternalService.OpenMeteo
 
         public async Task<WeatherForecastDto> GetWeatherForecastAsync(double latitude, double longitude, string location, int forecastDays = 7)
         {
-            var url =
-        $"https://api.open-meteo.com/v1/forecast?latitude={latitude.ToString(CultureInfo.InvariantCulture)}" +
-        $"&longitude={longitude.ToString(CultureInfo.InvariantCulture)}" +
-        $"&daily=precipitation_sum,temperature_2m_max,temperature_2m_min" +
-        $"&forecast_days={forecastDays}" +
-        $"&timezone=America%2FSao_Paulo";
+            var url = $"https://api.open-meteo.com/v1/forecast?latitude={latitude.ToString(CultureInfo.InvariantCulture)}&longitude={longitude.ToString(CultureInfo.InvariantCulture)}&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&forecast_days={forecastDays}&timezone=America%2FSao_Paulo";
 
             var response = await _httpClient.GetAsync(url);
-
             var json = await response.Content.ReadAsStringAsync();
 
-            if(!response.IsSuccessStatusCode)
-                throw new InvalidOperationException($"Erro ao obter previsão do tempo da Open-Meteo. Status Code: {response.StatusCode}, JSON recebido: {json}");
+            if (!response.IsSuccessStatusCode)
+                throw new InvalidOperationException($"Erro ao obter previsão: {json}");
 
-            var result = JsonSerializer.Deserialize<OpenMeteoForecastResponseDto>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var result = JsonSerializer.Deserialize<OpenMeteoForecastResponseDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if(result?.Daily is null)
-                throw new InvalidOperationException($"Não foi possível mapear os dados climáticos da Open-Meteo. JSON recebido: {json}");
+            var dailyList = new List<DailyWeatherDto>();
 
-            var dailyForecasts = result.Daily.Time
-                .Select ((Date, index) => new DailyWeatherDto
+            if (result?.Daily?.Time != null && result.Daily.Time.Count > 0)
+            {
+                for (int i = 0; i < result.Daily.Time.Count; i++)
                 {
-                    Date = Date,
-                    PrecipitationSum = result.Daily.PrecipitationSum[index],
-                    TemperatureMax = result.Daily.TemperatureMax[index],
-                    TemperatureMin = result.Daily.TemperatureMin[index]
-                })
-                .ToList();
+                    dailyList.Add(new DailyWeatherDto
+                    {
+                        Date = DateTime.Parse(result.Daily.Time[i]),
+                        PrecipitationSum = result.Daily.PrecipitationSum[i],
+                        TemperatureMax = result.Daily.TemperatureMax[i],
+                        TemperatureMin = result.Daily.TemperatureMin[i]
+                    });
+                }
+            }
 
             return new WeatherForecastDto
             {
                 Location = location,
-                DailyForecasts = dailyForecasts
-
+                DailyForecasts = dailyList // 👈 Garante que a lista vai preenchida e nunca nula!
             };
         }
 
@@ -97,7 +92,7 @@ namespace Vanguard.Infrastructure.ExternalService.OpenMeteo
         public class OpenMeteoDailyDto
         {
             [JsonPropertyName("time")]
-            public List<DateTime> Time { get; set; } = [];
+            public List<string> Time { get; set; } = [];
 
             [JsonPropertyName("precipitation_sum")]
             public List<decimal> PrecipitationSum { get; set; } = [];
