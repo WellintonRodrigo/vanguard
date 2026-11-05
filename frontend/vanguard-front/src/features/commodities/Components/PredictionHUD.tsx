@@ -27,6 +27,26 @@ export interface AgriculturePredictionResponse {
   predictionDate: string;
 }
 
+export interface DailyForecastDto {
+  date: string;
+  precipitationSum: number;
+  temperatureMax: number;
+  temperatureMin: number;
+}
+
+export interface AgricultureForecastResponse {
+  product: string;
+  location: string;
+  impactProbability: number;
+  trend: string;
+  estimatedVariationPercent: number;
+  insight: string;
+  predictionDate: string;
+  totalRainAccumulated: number;
+  criticalDaysCount: number;
+  dailyForecasts: DailyForecastDto[];
+}
+
 export const PredictionHUD: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
   const [product, setProduct] = useState<string>('Soja');
@@ -35,9 +55,8 @@ export const PredictionHUD: React.FC = () => {
   const [longitude] = useState<number>(-48.8487);
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [prediction, setPrediction] =
-    useState<AgriculturePredictionResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [forecastData, setForecastData] = useState<AgricultureForecastResponse | null>(null);
 
   const handleRunPrediction = async () => {
     setLoading(true);
@@ -51,14 +70,14 @@ export const PredictionHUD: React.FC = () => {
         longitude,
       };
 
-      const response = await apiClient.post<AgriculturePredictionResponse>(
-        'predictions/agriculture-prediction',
+      const response = await apiClient.post<AgricultureForecastResponse>(
+        '/predictions/agriculture/forecast',
         payload
       );
 
-      setPrediction(response.data);
+      setForecastData(response.data);
     } catch (err: unknown) {
-      console.error('Erro ao executar motor preditivo:', err);
+      console.error('Erro ao executar forecast preditivo:', err);
       setError(
         'Falha ao conectar com o motor Vanguard Engine. Verifique se a API está online.'
       );
@@ -67,8 +86,8 @@ export const PredictionHUD: React.FC = () => {
     }
   };
 
-  const trendInfo = prediction
-    ? formatTrend(prediction.trend)
+  const trendInfo = forecastData
+    ? formatTrend(forecastData.trend)
     : { label: '', className: '' };
 
   return (
@@ -178,7 +197,7 @@ export const PredictionHUD: React.FC = () => {
         )}
 
         {/* Painel de Resultados (Sci-Fi Cards) */}
-        {prediction && (
+        {forecastData && (
           <div className="mt-5 p-5 bg-slate-950/80 border border-slate-800/90 rounded-xl space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-slate-800/80 pb-5 text-center">
               {/* Risco / Impacto */}
@@ -187,7 +206,7 @@ export const PredictionHUD: React.FC = () => {
                   PROBABILIDADE DE IMPACTO
                 </span>
                 <span className="text-3xl font-extrabold text-emerald-400">
-                  {prediction.impactProbability}%
+                  {forecastData.impactProbability}%
                 </span>
               </div>
 
@@ -207,10 +226,64 @@ export const PredictionHUD: React.FC = () => {
                   VARIAÇÃO DE PREÇO PREVISTA
                 </span>
                 <span className="text-2xl font-bold text-sky-400">
-                  ~{prediction.estimatedVariationPercent}%
+                  ~{forecastData.estimatedVariationPercent}%
                 </span>
               </div>
             </div>
+
+            {/* Horizonte Meteorológico de 7 Dias */}
+{forecastData?.dailyForecasts && forecastData.dailyForecasts.length > 0 && (
+  <div className="bg-slate-950/80 border border-slate-800/90 p-4 rounded-xl space-y-3">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-800/80 pb-2.5 gap-2">
+      <span className="text-xs text-emerald-400 font-bold uppercase tracking-wider">
+        📅 HORIZONTE METEOROLÓGICO (PRÓXIMOS 7 DIAS)
+      </span>
+      <div className="flex items-center gap-4 text-[11px] text-slate-400 font-mono">
+        <span>
+          Chuva Acumulada: <strong className="text-white">{forecastData.totalRainAccumulated ?? 0} mm</strong>
+        </span>
+        <span>
+          Dias Críticos:{' '}
+          <strong className={(forecastData.criticalDaysCount ?? 0) > 0 ? 'text-amber-400' : 'text-emerald-400'}>
+            {forecastData.criticalDaysCount ?? 0}
+          </strong>
+        </span>
+      </div>
+    </div>
+
+    {/* Cards diários */}
+    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 pt-1">
+      {forecastData?.dailyForecasts.map((day, index) => {
+        const isCritical = day.precipitationSum >= 20;
+        return (
+          <div
+            key={index}
+            className={`p-3 rounded-lg border text-center transition-all ${
+              isCritical
+                ? 'bg-amber-950/35 border-amber-800/60 text-amber-200'
+                : 'bg-slate-900/60 border-slate-800/60 text-slate-300'
+            }`}
+          >
+            <div className="text-[10px] text-slate-400 font-mono mb-1">
+              {new Date(day.date).toLocaleDateString('pt-BR', {
+                weekday: 'short',
+                day: '2-digit',
+                month: '2-digit',
+              })}
+            </div>
+            <div className="text-sm font-bold flex items-center justify-center gap-1 my-1">
+              <span className={isCritical ? 'text-amber-400' : 'text-sky-400'}>💧</span>
+              <span>{day.precipitationSum} mm</span>
+            </div>
+            <div className="text-[10px] text-slate-400">
+              {day.temperatureMin}° / {day.temperatureMax}°
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+)}
 
             {/* Diagnóstico / Insight em destaque */}
             <div className="space-y-2">
@@ -218,13 +291,13 @@ export const PredictionHUD: React.FC = () => {
                 &gt; DIAGNÓSTICO HEURÍSTICO VANGUARD
               </span>
               <div className="p-4 bg-slate-900/90 border border-emerald-950/80 rounded-lg text-slate-200 text-sm font-mono leading-relaxed shadow-inner">
-                "{prediction.insight}"
+                "{forecastData.insight}"
               </div>
             </div>
 
             <div className="text-right text-[10px] text-slate-500 font-mono">
               Análise gerada em:{' '}
-              {new Date(prediction.predictionDate).toLocaleString('pt-BR')}
+              {new Date(forecastData.predictionDate).toLocaleString('pt-BR')}
             </div>
           </div>
         )}

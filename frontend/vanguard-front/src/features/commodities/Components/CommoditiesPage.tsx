@@ -39,6 +39,7 @@ export const CommoditiesPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCommodity, setSelectedCommodity] = useState<string>('Todas');
+  const [activeTab, setActiveTab] = useState<'central' | 'audit' >('central');
 
   // 1. Requisita todas as cotações uma única vez ao montar a página
   useEffect(() => {
@@ -108,6 +109,30 @@ export const CommoditiesPage: React.FC = () => {
           <p className="text-sm text-gray-500 dark:text-gray-400">Acompanhamento em tempo real via Vanguard API</p>
         </div>
 
+        {/* ABAS MODULARES */}
+  <div className="flex items-center bg-slate-950 border border-slate-800 p-1 rounded-xl shadow-lg">
+    <button
+      onClick={() => setActiveTab('central')}
+      className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+        activeTab === 'central'
+          ? 'bg-emerald-600 text-white shadow-md'
+          : 'text-slate-400 hover:text-white hover:bg-slate-900'
+      }`}
+    >
+      Central Preditiva &amp; Cotações
+    </button>
+    <button
+      onClick={() => setActiveTab('audit')}
+      className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+        activeTab === 'audit'
+          ? 'bg-emerald-600 text-white shadow-md'
+          : 'text-slate-400 hover:text-white hover:bg-slate-900'
+      }`}
+    >
+      Histórico de Auditoria
+    </button>
+  </div>
+
         {/* Dropdown 100% Dinâmico */}
         <div className="flex items-center gap-2">
           <label htmlFor="commodity-select" className="text-xs font-medium text-gray-400">
@@ -126,27 +151,31 @@ export const CommoditiesPage: React.FC = () => {
             ))}
           </select>
         </div>
-      </div>
+      </div> 
 
-      <CommodityKPIs data={filteredData} />
+        {activeTab === 'central' ? (
+          <>
 
-      
-      <div className="p-6 space-y-6">
-      <PredictionHUD />
-      </div>
-      
+          <div className="p-6 space-y-6">
+            <PredictionHUD />
+          </div>
+
       <CommoditesCardsDest
       data={latestCommodities}
       formatCurrency={formatCurrency}
       formatDate={formatDate}
       />
-
-
-      <CommodityHistoryTable 
-      data={filteredData}
-      formatCurrency={formatCurrency}
-      formatDate={formatDate}
+            <CommodityKPIs data={filteredData} />
+          </>
+        ) : (
+              <div className="p-6 space-y-6">
+               <CommodityHistoryTable 
+              data={filteredData}
+              formatCurrency={formatCurrency}
+              formatDate={formatDate}
       />
+              </div>
+            )}    
     </div>  
   );
 };
