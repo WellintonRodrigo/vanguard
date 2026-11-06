@@ -122,9 +122,8 @@ export const PredictionHUD: React.FC = () => {
             {isExpanded ? 'Recolher HUD' : 'Expandir HUD'}
           </span>
           <div
-            className={`p-1.5 rounded-lg bg-slate-800 text-slate-300 transform transition-transform duration-300 text-xs flex items-center justify-center ${
-              isExpanded ? 'rotate-180 bg-emerald-950 text-emerald-400' : ''
-            }`}
+            className={`p-1.5 rounded-lg bg-slate-800 text-slate-300 transform transition-transform duration-300 text-xs flex items-center justify-center ${isExpanded ? 'rotate-180 bg-emerald-950 text-emerald-400' : ''
+              }`}
           >
             <DownOutlined />
           </div>
@@ -133,14 +132,13 @@ export const PredictionHUD: React.FC = () => {
 
       {/* Conteúdo Expansível do HUD */}
       <div
-        className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          isExpanded ? 'max-h-[1000px] opacity-100 p-5' : 'max-h-0 opacity-0 p-0'
-        }`}
+        className={`transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? 'max-h-250 opacity-100 p-5' : 'max-h-0 opacity-0 p-0'
+          }`}
       >
         {/* Controles de Entrada / Parâmetros */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl">
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1 flex items-center gap-1.5">
+            <label className="block text-xs font-semibold text-slate-400 mb-1 items-center gap-1.5">
               <AimOutlined className="text-emerald-400" /> COMMODITY TARGET
             </label>
             <select
@@ -156,7 +154,7 @@ export const PredictionHUD: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1 flex items-center gap-1.5">
+            <label className="block text-xs font-semibold text-slate-400 mb-1 items-center gap-1.5">
               <LineChartOutlined className="text-emerald-400" /> REGIONAL DE ANÁLISE
             </label>
             <input
@@ -232,58 +230,57 @@ export const PredictionHUD: React.FC = () => {
             </div>
 
             {/* Horizonte Meteorológico de 7 Dias */}
-{forecastData?.dailyForecasts && forecastData.dailyForecasts.length > 0 && (
-  <div className="bg-slate-950/80 border border-slate-800/90 p-4 rounded-xl space-y-3">
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-800/80 pb-2.5 gap-2">
-      <span className="text-xs text-emerald-400 font-bold uppercase tracking-wider">
-        📅 HORIZONTE METEOROLÓGICO (PRÓXIMOS 7 DIAS)
-      </span>
-      <div className="flex items-center gap-4 text-[11px] text-slate-400 font-mono">
-        <span>
-          Chuva Acumulada: <strong className="text-white">{forecastData.totalRainAccumulated ?? 0} mm</strong>
-        </span>
-        <span>
-          Dias Críticos:{' '}
-          <strong className={(forecastData.criticalDaysCount ?? 0) > 0 ? 'text-amber-400' : 'text-emerald-400'}>
-            {forecastData.criticalDaysCount ?? 0}
-          </strong>
-        </span>
-      </div>
-    </div>
+            {forecastData?.dailyForecasts && forecastData.dailyForecasts.length > 0 && (
+              <div className="bg-slate-950/80 border border-slate-800/90 p-4 rounded-xl space-y-3">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-800/80 pb-2.5 gap-2">
+                  <span className="text-xs text-emerald-400 font-bold uppercase tracking-wider">
+                    📅 HORIZONTE METEOROLÓGICO (PRÓXIMOS 7 DIAS)
+                  </span>
+                  <div className="flex items-center gap-4 text-[11px] text-slate-400 font-mono">
+                    <span>
+                      Chuva Acumulada: <strong className="text-white">{forecastData.totalRainAccumulated ?? 0} mm</strong>
+                    </span>
+                    <span>
+                      Dias Críticos:{' '}
+                      <strong className={(forecastData.criticalDaysCount ?? 0) > 0 ? 'text-amber-400' : 'text-emerald-400'}>
+                        {forecastData.criticalDaysCount ?? 0}
+                      </strong>
+                    </span>
+                  </div>
+                </div>
 
-    {/* Cards diários */}
-    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 pt-1">
-      {forecastData?.dailyForecasts.map((day, index) => {
-        const isCritical = day.precipitationSum >= 20;
-        return (
-          <div
-            key={index}
-            className={`p-3 rounded-lg border text-center transition-all ${
-              isCritical
-                ? 'bg-amber-950/35 border-amber-800/60 text-amber-200'
-                : 'bg-slate-900/60 border-slate-800/60 text-slate-300'
-            }`}
-          >
-            <div className="text-[10px] text-slate-400 font-mono mb-1">
-              {new Date(day.date).toLocaleDateString('pt-BR', {
-                weekday: 'short',
-                day: '2-digit',
-                month: '2-digit',
-              })}
-            </div>
-            <div className="text-sm font-bold flex items-center justify-center gap-1 my-1">
-              <span className={isCritical ? 'text-amber-400' : 'text-sky-400'}>💧</span>
-              <span>{day.precipitationSum} mm</span>
-            </div>
-            <div className="text-[10px] text-slate-400">
-              {day.temperatureMin}° / {day.temperatureMax}°
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  </div>
-)}
+                {/* Cards diários */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 pt-1">
+                  {forecastData?.dailyForecasts.map((day, index) => {
+                    const isCritical = day.precipitationSum >= 20;
+                    return (
+                      <div
+                        key={index}
+                        className={`p-3 rounded-lg border text-center transition-all ${isCritical
+                            ? 'bg-amber-950/35 border-amber-800/60 text-amber-200'
+                            : 'bg-slate-900/60 border-slate-800/60 text-slate-300'
+                          }`}
+                      >
+                        <div className="text-[10px] text-slate-400 font-mono mb-1">
+                          {new Date(day.date).toLocaleDateString('pt-BR', {
+                            weekday: 'short',
+                            day: '2-digit',
+                            month: '2-digit',
+                          })}
+                        </div>
+                        <div className="text-sm font-bold flex items-center justify-center gap-1 my-1">
+                          <span className={isCritical ? 'text-amber-400' : 'text-sky-400'}>💧</span>
+                          <span>{day.precipitationSum} mm</span>
+                        </div>
+                        <div className="text-[10px] text-slate-400">
+                          {day.temperatureMin}° / {day.temperatureMax}°
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Diagnóstico / Insight em destaque */}
             <div className="space-y-2">

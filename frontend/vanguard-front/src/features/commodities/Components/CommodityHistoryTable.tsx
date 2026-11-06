@@ -68,10 +68,10 @@ export const CommodityHistoryTable: React.FC<CommodityHistoryTableProps> = ({
       {/* Container Deslizante do Accordion */}
       <div
         className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          isExpanded ? 'max-h-[700px] opacity-100' : 'max-h-0 opacity-0'
+          isExpanded ? 'max-h-175 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+        <div className="overflow-x-auto max-h-150 overflow-y-auto">
           <table className="w-full text-left text-sm text-slate-300">
             <thead className="bg-slate-950/90 text-xs text-slate-400 uppercase tracking-wider sticky top-0 backdrop-blur-md border-b border-slate-800">
               <tr>

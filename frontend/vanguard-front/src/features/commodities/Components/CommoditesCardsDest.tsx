@@ -76,7 +76,7 @@ export const CommoditesCardsDest: React.FC<CommodityKpiGridProps> = ({
       {/* Grid de Cards Sanfonado */}
       <div
         className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          isExpanded ? 'max-h-[1200px] opacity-100 p-5' : 'max-h-0 opacity-0 p-0'
+          isExpanded ? 'max-h-300 opacity-100 p-5' : 'max-h-0 opacity-0 p-0'
         }`}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
