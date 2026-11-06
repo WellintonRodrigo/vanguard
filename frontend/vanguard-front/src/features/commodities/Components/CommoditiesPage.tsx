@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { apiClient } from '../../../shared/api/apiClient';
 import { CommodityKPIs } from './CommodityKPIs';
-import {CommodityHistoryTable} from './CommodityHistoryTable';
-import{ CommoditesCardsDest} from './CommoditesCardsDest';
+import { CommodityHistoryTable } from './CommodityHistoryTable';
+import { CommoditesCardsDest } from './CommoditesCardsDest';
 import { PredictionHUD } from './PredictionHUD';
 import { formatCurrency, formatDate } from '../../../shared/utils/formatters';
+import { CommodityFilter } from './CommodityFilter';
 export interface CommodityPrice {
+  [key: string]: string | number | null;
   id: string;
   source: string;
   commodity: string;
@@ -36,10 +38,16 @@ function getLatestPricesPerMarket(items: CommodityPrice[]): CommodityPrice[] {
 
 export const CommoditiesPage: React.FC = () => {
   const [data, setData] = useState<CommodityPrice[]>([]);
+  const [filteredData, setFilteredData] = useState<CommodityPrice[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCommodity, setSelectedCommodity] = useState<string>('Todas');
-  const [activeTab, setActiveTab] = useState<'central' | 'audit' >('central');
+  const [activeTab, setActiveTab] = useState<'central' | 'audit'>('central');
+
+  const handleFilteredDataChange: NonNullable<
+    React.ComponentProps<typeof CommodityFilter>['onFilteredDataChange']
+  > = (filtered) => {
+    setFilteredData(filtered as CommodityPrice[]);
+  };
 
   // 1. Requisita todas as cotações uma única vez ao montar a página
   useEffect(() => {
@@ -50,7 +58,9 @@ export const CommoditiesPage: React.FC = () => {
 
         // O backend agora devolve tudo quando chamado sem parâmetros
         const response = await apiClient.get<CommodityPrice[]>('/commodity-prices/history');
-        setData(response.data || []);
+        const prices = response.data || [];
+        setData(prices);
+        setFilteredData(prices);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : 'Erro ao carregar dados');
       } finally {
@@ -61,31 +71,15 @@ export const CommoditiesPage: React.FC = () => {
     fetchAllCommodities();
   }, []);
 
-  // 2. Extrai dinamicamente as commodities existentes no banco para o dropdown
-  const availableCategories = useMemo(() => {
-    if (!data || data.length === 0) return ['Todas'];
-    const categories = Array.from(new Set(data.map((item) => item.commodity))).filter(Boolean);
-    return ['Todas', ...categories.sort()];
-  }, [data]);
-
-  // 3. Filtro instantâneo em memória (0ms) ao trocar a opção no <select>
-  const filteredData = useMemo(() => {
-    if (selectedCommodity === 'Todas') {
-      return data;
-    }
-    return data.filter(
-      (item) => item.commodity.toLowerCase() === selectedCommodity.toLowerCase()
-    );
-  }, [data, selectedCommodity]);
-
+  
   // 4. Recalcula os Cards de Destaque com base nos dados filtrados
   const latestCommodities = useMemo(() => {
-    return getLatestPricesPerMarket(filteredData);
-  }, [filteredData]);
+    return getLatestPricesPerMarket(data);
+  }, [data]);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[300px]">
+      <div className="flex justify-center items-center min-h-75">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
       </div>
     );
@@ -110,72 +104,63 @@ export const CommoditiesPage: React.FC = () => {
         </div>
 
         {/* ABAS MODULARES */}
-  <div className="flex items-center bg-slate-950 border border-slate-800 p-1 rounded-xl shadow-lg">
-    <button
-      onClick={() => setActiveTab('central')}
-      className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
-        activeTab === 'central'
-          ? 'bg-emerald-600 text-white shadow-md'
-          : 'text-slate-400 hover:text-white hover:bg-slate-900'
-      }`}
-    >
-      Central Preditiva &amp; Cotações
-    </button>
-    <button
-      onClick={() => setActiveTab('audit')}
-      className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
-        activeTab === 'audit'
-          ? 'bg-emerald-600 text-white shadow-md'
-          : 'text-slate-400 hover:text-white hover:bg-slate-900'
-      }`}
-    >
-      Histórico de Auditoria
-    </button>
-  </div>
-
-        {/* Dropdown 100% Dinâmico */}
-        <div className="flex items-center gap-2">
-          <label htmlFor="commodity-select" className="text-xs font-medium text-gray-400">
-            Commodity:
-          </label>
-          <select
-            id="commodity-select"
-            value={selectedCommodity}
-            onChange={(e) => setSelectedCommodity(e.target.value)}
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-gray-700 bg-gray-900 text-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer transition-colors"
+        <div className="flex items-center bg-slate-950 border border-slate-800 p-1 rounded-xl shadow-lg">
+          <button
+            onClick={() => setActiveTab('central')}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${activeTab === 'central'
+                ? 'bg-emerald-600 text-white shadow-md'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              }`}
           >
-            {availableCategories.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
+            Central Preditiva &amp; Cotações
+          </button>
+          <button
+            onClick={() => setActiveTab('audit')}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${activeTab === 'audit'
+                ? 'bg-emerald-600 text-white shadow-md'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              }`}
+          >
+            Histórico de Auditoria
+          </button>
         </div>
-      </div> 
 
-        {activeTab === 'central' ? (
-          <>
+      </div>
+
+      {activeTab === 'central' ? (
+        <>
+
+          <CommodityKPIs data={filteredData} />
 
           <div className="p-6 space-y-6">
             <PredictionHUD />
           </div>
 
-      <CommoditesCardsDest
-      data={latestCommodities}
-      formatCurrency={formatCurrency}
-      formatDate={formatDate}
-      />
-            <CommodityKPIs data={filteredData} />
-          </>
-        ) : (
-              <div className="p-6 space-y-6">
-               <CommodityHistoryTable 
+          <CommoditesCardsDest
+            data={latestCommodities}
+            formatCurrency={formatCurrency}
+            formatDate={formatDate}
+          />
+
+        </>
+      ) : (
+        <div>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
+            <CommodityFilter
+              data={data}
+              onFilteredDataChange={handleFilteredDataChange}
+            />
+          </div>
+
+          <div className="p-6 space-y-6">
+            <CommodityHistoryTable
               data={filteredData}
               formatCurrency={formatCurrency}
               formatDate={formatDate}
-      />
-              </div>
-            )}    
-    </div>  
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
