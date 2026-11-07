@@ -1,18 +1,17 @@
 import {
-  CloudOutlined,
+  
   DashboardOutlined,
   DatabaseOutlined,
-  HeartOutlined,
-  SyncOutlined,
 } from "@ant-design/icons";
 
 import { Layout, Menu } from "antd";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
 export function MainLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleMenuClick = ({ key }: { key: string }) => {
     navigate(key);
@@ -28,14 +27,11 @@ export function MainLayout() {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["/"]}
+          selectedKeys={[location.pathname]}
           onClick={handleMenuClick}
           items={[
             { key: "/", icon: <DashboardOutlined />, label: "Dashboard" },
-            { key: "/commodities", icon: <DatabaseOutlined />, label: "Commodities",},
-            { key: "/weather", icon: <CloudOutlined />, label: "Clima" },
-            { key: "/freshness", icon: <SyncOutlined />, label: "Atualização dos Dados" },
-            { key: "/health", icon: <HeartOutlined />, label: "Saúde do Sistema" },
+            { key: "/commodities", icon: <DatabaseOutlined />, label: "Commodities",}
           ]}
         />
       </Sider>
