@@ -1,62 +1,124 @@
 # 🌾 Vanguard — Intelligence Center
 
-> Plataforma de inteligência de dados, análise de mercado e suporte à tomada de decisão para o agronegócio.  
-> *Projeto autoral desenvolvido com foco em Arquitetura de Software Avançada, Engenharia de Dados e Inteligência Artificial.*
+Plataforma autônoma de inteligência de dados, análise de mercado e suporte à tomada de decisão para o agronegócio. 
+*Projeto autoral desenvolvido com foco em Engenharia de Dados, arquitetura enxuta e Inteligência Preditiva.*
 
 ---
 
-## 📌 Visão Geral & Propósito do Projeto
+## 🚀 Visão Geral & Propósito
+O **Vanguard** nasceu de uma provocação de estudo: *é possível prever o comportamento do mercado e antecipar riscos no agronegócio combinando dados abertos?*
 
-O **Vanguard** nasceu de uma provocação pessoal e de estudos: **é possível prever o comportamento do mercado e Antecipar riscos no agronegócio?** No início, a ambição era criar um sistema "onipresente" capaz de prever quase tudo — preços, tendências, clima e safras. 
-
-À medida que o projeto evoluiu, a visão amadureceu para uma abordagem pragmática de produto: para prever o futuro com precisão, primeiro é preciso **dominar o presente com dados confiáveis**.
-
-Hoje, o Vanguard é uma plataforma *end-to-end* em fase piloto focada no monitoramento integrado de **Commodities e Clima**. O sistema combina captura autônoma de dados, alta performance de apresentação e uma arquitetura em **DDD (Domain-Driven Design)** desenhada especificamente para suportar o próximo passo do projeto: a implementação de modelos de **IA para Detecção Preditiva de Anomalias Climáticas**.
+A plataforma opera de forma **end-to-end** coletando, limpando e cruzando preços de commodities agrícolas com variáveis climáticas em tempo real. O objetivo central não é criar um painel poluído de gráficos, mas seguir a filosofia: **pouca informação, mas informação altamente relevante.**
 
 ---
 
-## 🚀 Principais Funcionalidades
+## 🛠️ Stack Tecnológica & Arquitetura
 
-- 📊 **Dashboard Executivo de Alta Performance (O Core de Decisão):**
-  - Painel central projetado para leitura visual imediata e análise rápida de cenários.
-  - Exibição em tempo real do valor mais recente de cada commodity por mercado/praça, correlacionado com indicadores de variação diária (`+` / `-`) e tendências de curto prazo.
-  - Agrupamento inteligente por categorias e métricas vitais (KPIs), permitindo comparar rapidamente **Soja**, **Milho**, **Arroz**, **Boi Gordo** e novos ativos em uma única visão unificada.
+### **Back-end (.NET 10 / C#)**
+- **Arquitetura Base:** Separação limpa baseada em features e Domain-Driven Design adaptado (Domain, Application, Infrastructure, API, Worker).
+- **Persistência:** **MongoDB Atlas** (Séries temporais e documentos flexíveis com custo zero / M0 Free Tier).
+- **Worker Service (ETL Engine):** Serviço autônomo em segundo plano responsável pelo *scraping* resiliente e consumo de APIs externas.
+- **APIs RESTful:** Endpoints otimizados.
 
-- 🔄 **Automação de Dados & Scraping Resiliente (Worker Engine):**
-  - Serviço de segundo plano (*Background Worker*) $100\%$ autônomo, responsável pelo pipeline contínuo de extração, limpeza, transformação e carga (ETL).
-  - Captura diária e sem intervenção humana de fontes externas de mercado e APIs meteorológicas.
-  - Arquitetura resiliente tratada contra falhas de rede, re-tentativas e gravação consistente de séries temporais.
-
-- ⚡ **Filtragem & Navegação Instantânea (0ms de Latência):**
-  - Motor de processamento e filtragem em memória no front-end que permite alternar visões, mercados e commodities instantaneamente, sem *loading spinners* adicionais ou chamadas redundantes à API.
-
-- 🌦️ **Módulo de Clima & Análise Ambiental (Piloto Ativo):**
-  - Monitoramento de variáveis meteorológicas críticas que impactam diretamente a produtividade no campo e a formação de preços das commodities.
-
-- 🤖 **Detector de Anomalias Climáticas (Laboratório de IA & Roadmap Preditivo):**
-  - O próximo grande marco do projeto: aplicação de modelos de análise preditiva/machine learning para identificar desvios padrões em precipitação e temperatura, alertando antecipadamente sobre riscos de seca ou geadas que possam impactar a precificação do mercado.
+### **Front-end (React 19, TypeScript & Tailwind CSS)**
+- **Arquitetura de UI:** Interface executiva em modo escuro inspirada em HUDs minimalistas.
+- **Performance e Caching:** Estratégia de carregamento otimizado (single-fetch no arranque) com gerenciamento de estado em memória para navegação sem latência (`0ms` em filtros por praça/commodity).
 
 ---
 
-## 🛠️ Arquitetura e Engenharia de Software
+## ⚙️ Principais Módulos Implementados
 
-Desenvolvido para consolidar boas práticas de mercado, o Vanguard foi arquitetado sobre os princípios do **Domain-Driven Design (DDD)**, garantindo desacoplamento total entre as regras de negócio e os detalhes de infraestrutura.
+1. **Dashboard Executivo (Core de Decisão):** 
+   - Leitura visual imediata com variação diária/mensal automática (`+` / `-`).
+   - Agrupamento inteligente por categorias (Soja, Milho, etc.).
+2. **Worker & Ingestão Resiliente:** 
+   - Coleta automatizada de fontes externas (como *Notícias Agrícolas*).
+   - Sistema de verificação de frescor de dados e relatórios de integridade de coletores.
+3. **Módulo de Clima & Motor Preditivo (Laboratório Atual):** 
+   - Integração com a API pública **Open-Meteo** para monitoramento meteorológico da região piloto (Joinville / Sul do Brasil).
+   - Camada de heurísticas que cruza pluviosidade e variação de preços para gerar probabilidades de impacto e insights acionáveis.
+
 ---
 
-## 🛠️ Arquitetura e Tecnologia
+## 📊 Status do Roadmap
 
-O Vanguard foi arquitetado sobre os princípios de **Domain-Driven Design (DDD)**, mantendo o domínio do negócio completamente isolado de detalhes de infraestrutura e garantindo testabilidade, evolução contínua e alta manutenibilidade.
+- [x] **Arquitetura Base & Conexão MongoDB Atlas**
+- [x] **Worker Service de Ingestão de Commodities Operacional**
+- [x] **Endpoints RESTful de Preços e Históricos**
+- [x] **Dashboard de Commodities em React 19**
+- [x] **Integração com API de Clima (Open-Meteo)**
+- [x] **Camada de Heurísticas e Motor Preditivo**
+- [ ] **Políticas de Retenção de Dados e Expurgo Automático (Backlog)**
 
 ---
 
-### **Back-end (.NET 10 & C#) — Padrão DDD**
-- **Domain Layer:** Regras de negócio puras, entidades e contratos de repositórios, totalmente desacoplados de frameworks.
-- **Application Layer (Use Cases):** Casos de uso bem definidos orchestrando o fluxo das informações de commodities e clima.
-- **Infrastructure Layer:** Implementações concretas de acesso ao **MongoDB Atlas**, clientes HTTP para scraping e conectores de dados externos.
-- **Worker Service:** Ingestão contínua assíncrona operando sob os mesmos conceitos do domínio.
+## 🏁 Como Executar o Projeto
 
-### **Front-end (React, TypeScript & Tailwind CSS)**
-- **React 19 & TypeScript:** Tipagem rigorosa compartilhada conceitualmente com os contratos da API.
-- **Client-Side Caching & Memory Management:** Estratégia de carregamento em bloco inicial para garantir trocas de estados sem *loading spinners* desnecessários.
+Para rodar o **Vanguard — Intelligence Center** localmente na sua máquina, siga os passos abaixo. O ambiente é dividido entre o **Back-end (.NET 10)** (com seu Worker Service de ingestão autônoma) e o **Front-end (React 19)**.
+
+### 📋 Pré-requisitos
+Certifique-se de ter instalado em seu ambiente:
+- [.NET 10 SDK](https://dotnet.microsoft.com/)
+- [Node.js](https://nodejs.org/) (v18+ recomendada)
+- Uma conta com cluster ativo no [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (Plano M0 Free Tier)
+
 ---
-*Vanguard — Um projeto de estudos focado em transformar dados brutos em decisões inteligentes.*
+
+### 1️⃣ Configuração do Banco de Dados (MongoDB Atlas)
+1. Crie um cluster gratuito no MongoDB Atlas.
+2. Na aba **Network Access**, libere seu IP atual ou habilite acesso temporário para desenvolvimento (`0.0.0.0/0`).
+3. Copie a sua *Connection String* de acesso ao banco.
+
+---
+
+### 2️⃣ Configuração de Variáveis de Ambiente
+No arquivo `appsettings.json` (ou `appsettings.Development.json`) dos projetos `src/Vanguard.API` e `src/Vanguard.Worker`, configure a string de conexão:
+
+```json
+"ConnectionStrings": {
+  "MongoDB": "sua-connection-string-do-mongodb-atlas"
+}
+No appsettings.json do Vanguard.Worker, configure as praças de monitoramento meteorológico (Open-Meteo):
+
+JSON
+"TargetRegions": [
+  {
+    "Location": "Joinville - SC",
+    "Latitude": -26.3044,
+    "Longitude": -48.8487
+  }
+]
+```
+### 3️⃣ Executando o Back-end e o Worker (.NET 10)
+Você pode iniciar os projetos pelo Visual Studio (configurando Múltiplos Projetos de Inicialização) ou via terminal:
+
+Iniciando a API RESTful:
+
+Bash
+`dotnet run --project src/Vanguard.API/Vanguard.API.csproj`
+A API estará acessível via HTTPS e o Swagger estará disponível em https://localhost:7011/swagger.
+
+Iniciando o Worker Service (Ingestão Autônoma):
+```
+Bash
+dotnet run --project src/Vanguard.Worker/Vanguard.Worker.csproj
+```
+O Worker iniciará os ciclos de coleta contínua em segundo plano (commodities e clima).
+
+### 4️⃣ Executando o Front-end (React 19 + TypeScript)
+Navegue até a pasta do front-end:
+```
+Bash
+cd src/Vanguard.Frontend
+```
+Instale as dependências:
+```
+Bash
+npm install
+```
+Execute o servidor de desenvolvimento Vite:
+```
+Bash
+npm run dev
+```
+Acesse a aplicação no seu navegador no endereço indicado pelo Vite `(geralmente http://localhost:5173).`
